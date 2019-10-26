@@ -1,9 +1,7 @@
 server:
   port: 80
-  servlet:
-    context-path: "/jf_IOT"
-
-
+#  servlet:
+#    context-path: "/jf_IOT"
       #      org.springframework: debug
 spring:
   datasource:

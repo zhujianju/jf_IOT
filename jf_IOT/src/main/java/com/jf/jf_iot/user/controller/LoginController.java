@@ -11,6 +11,8 @@ import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 public class LoginController {
 /*    //对密码进行 md5 加密
@@ -18,11 +20,13 @@ public class LoginController {
     @Autowired
     private UserService userService;
     @PostMapping("Login")
-    public String userLogin(User user){
+    public String userLogin(User user, HttpSession session){
         User one = userService.findOne(user);
+
         if(one.getAutho() == null){
             throw new IOTException(ExceptionEnum.USER_NOT_AUTHO);
         }
+        session.setAttribute("user",one);
         if(one.getAutho() == 1){
             return "redirect:https://www.baidu.com/?id=1";
         }

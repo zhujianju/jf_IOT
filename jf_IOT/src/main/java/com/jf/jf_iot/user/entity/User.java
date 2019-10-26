@@ -15,6 +15,8 @@ public class User {
     @KeySql(useGeneratedKeys = true)
     private Integer id;
     private String name;//用户名称
+
+
     private String account;//用户账号
     private String password;//密码
     private String cid;//身份证

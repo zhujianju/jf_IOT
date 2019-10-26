@@ -8,6 +8,7 @@ import com.jf.jf_iot.user.mapper.UserMapper;
 import com.jf.jf_iot.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 @Service
@@ -48,9 +49,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findOne(User user) {
-        User us = userMapper.selectOne(user);
-        if(us == null){
+        Example example=new Example(User.class);
+        example.createCriteria().andEqualTo("account",user.getAccount());
+        User us = userMapper.selectOneByExample(example);
+        if(us == null){//如果用户不存在
             throw new IOTException(ExceptionEnum.USER_NOT_FOND);
+        }
+        if(!us.getPassword().equals(user.getPassword())){//密码错误
+            throw new IOTException(ExceptionEnum.USER_PASSWORD_ERROR);
         }
         return us;
     }

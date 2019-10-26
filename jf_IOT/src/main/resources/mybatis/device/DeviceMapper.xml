@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jf.jf_iot.device.mapper.DeviceMapper">
+    <select id="queryDeviceByUserId" resultType="com.jf.jf_iot.device.entity.Device" parameterType="Integer">
+        SELECT * FROM
+        `con_device` cd
+        where id in
+        (select
+         deviceId
+         FROM
+         con_device_user
+         <where>
+         userId = #{userId})
+             <if test="typid != null">
+                AND cd.typeId = #{typid}
+             </if>
+             <if test="deviceName != null">
+                AND cd.deviceName LIKE "%"#{deviceName}"%"
+             </if>
+         </where>
+
+    </select>
+
+</mapper>
