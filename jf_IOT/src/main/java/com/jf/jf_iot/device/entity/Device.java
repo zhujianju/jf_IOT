@@ -20,7 +20,9 @@ public class Device {
     private String devicesecret;
     private Integer saleactivate;
     @Transient
-    private String typeName;
+    private DeviceType deviceType;
+    @Transient
+    private DeviceParam deviceParam;
 
 
 }

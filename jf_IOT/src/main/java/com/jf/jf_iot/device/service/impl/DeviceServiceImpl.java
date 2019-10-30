@@ -65,9 +65,6 @@ public class DeviceServiceImpl implements DeviceService {
         if(CollectionUtils.isEmpty(devices)){
             throw new IOTException(ExceptionEnum.DEVICE_NOT_FOND);
         }
-        for (Device device1 : devices) {
-            System.out.println(device1);
-        }
 
         //解析分页对象
         PageInfo<Device> info=new PageInfo<>(devices);
@@ -92,7 +89,10 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public Device findOne(Integer id) {
-        return null;
+        Device device=new Device();
+        device.setId(id);
+        Device de = deviceMapper.selectOne(device);
+        return de;
     }
 
     @Override
