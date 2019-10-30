@@ -65,4 +65,13 @@
         </dependency>
     </dependencies>
 
+
+    <properties>
+        <!-- 修改JDK的编译版本为1.8 -->
+        <java.version>1.8</java.version>
+        <!-- 修改thymeleaf版本 -->
+        <thymeleaf.version>3.0.11.RELEASE</thymeleaf.version>
+        <thymeleaf-layout-dialect.version>2.4.1</thymeleaf-layout-dialect.version>
+        <thymeleaf-extras-springsecurity4.version>3.0.4.RELEASE</thymeleaf-extras-springsecurity4.version>
+    </properties>
 </project>
