@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -18,11 +19,16 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class LoginController {
+    @RequestMapping("login")
+    public String login(){
+        return "/login/index";
+    }
+
 /*    //对密码进行 md5 加密
     String md5Password = DigestUtils.md5DigestAsHex(user.getPassword().getBytes());*/
     @Autowired
     private UserService userService;
-    @PostMapping("Login")
+    @PostMapping("userLogin")
     public String userLogin(User user, HttpSession session, HttpServletResponse response){
         if(StringUtils.isEmpty(user.getAccount()) || StringUtils.isEmpty(user.getPassword()) ){
             throw new IOTException(ExceptionEnum.USER_REQUST_ERROR);

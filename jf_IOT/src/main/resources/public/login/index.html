@@ -1,6 +1,6 @@
 <!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <html lang="zh">
-<html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
@@ -30,7 +30,7 @@
 <body class="red">
 	<div id="login-page" class="row" style="width: 400px;">
 	    <div class="col s12 z-depth-6 card-panel">
-	      <form class="login-form" name="form1" action="/public/login" method="post">
+	      <form class="login-form" name="form1" action="/userLogin" method="post">
 	        <div class="row">
 	          <div class="input-field col s12 center">
 
@@ -63,10 +63,10 @@
 	            <p class="margin medium-small"><a href="register.html">现在注册!</a></p>
 	          </div>
 	          <div class="input-field col s6 m6 l6">
-	              <p class="margin right-align medium-small"><a th:href="@{/forgot-password.html}">忘记密码?</a></p>
+	              <p class="margin right-align medium-small"><a href="forgot-password.html">忘记密码?</a></p>
 	          </div>          
-
-	      </form>
+            </div>
+            </form>
 	    </div>
 	  </div>
 	  </div>
