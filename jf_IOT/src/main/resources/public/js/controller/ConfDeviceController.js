@@ -18,15 +18,12 @@ app.controller('deviceController',function ($scope,$controller,deviceService) {
     $scope.search=function(page,rows){
         deviceService.findPage(page,rows,$scope.searchEntity).success(
             function(response){
+                $scope.errorEntityt.code=000;//000则为正常。不提示任何错误信息
                 $scope.list=response.items;
                 $scope.paginationConf.totalItems=response.total;//更新总记录数
             }
         ).error(function (error) {
-          console.log(error);
-            if(error.status==404){
-                alert("没有查询到设备");
-                $scope.list=null;
-            }
+            $scope.getError(error);
         });
     }
 

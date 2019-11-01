@@ -35,13 +35,18 @@
     <link rel="stylesheet" href="../plugins/select2/select2-bootstrap.css" />
     <script src="../plugins/select2/select2.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="../js/plugins/angular-select2.js"> </script>
+    <style type="text/css">
+        #entitySaleactivate{
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body class="hold-transition skin-red sidebar-mini"   ng-app="jfiot" ng-controller="deviceController" ng-init="initSDDC()" >
   <!-- .box-body -->
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">站点管理</h3>
+                        <h3 class="box-title">设备信息</h3>
                     </div>
 
                     <div class="box-body">
@@ -73,13 +78,14 @@
                                 <div style="margin-left: 370px;margin-top: -35px"  class="input-group"><button class="btn btn-default" ng-click="reloadList()" >查询</button></div>
                             </div>
                             <!--工具栏/-->
-                            <div ng-if="list ==null "> 没有找到任何设备........</div>
-
+                            <div class="jumbotron" ng-if="errorEntityt.code==001 ">
+                                <h1>{{errorEntityt.message}}</h1>
+                                <p ng-bind-html="errorEntityt.text | trustHtml"></p>
+                            </div>
 			                  <!--数据列表-->
-			                  <table id="dataList" class="table table-bordered table-striped table-hover dataTable" ng-if="list != null">
+			                  <table id="dataList" class="table table-bordered table-striped table-hover dataTable" ng-if="list != null && errorEntityt.code==000">
 			                      <thead>
 			                          <tr>
-			                             
 										  <th class="sorting_asc">设备名称</th>
 									      <th class="sorting">设备分类</th>
 									      <th class="sorting">查看参数</th>
@@ -92,13 +98,13 @@
 			                          <tr ng-repeat="entity in list">
 				                          <td>{{entity.devicename}}</td>
 									      <td>{{findDeviceTypeText(entity.typeid)}}</td>
-		                                 <td>设备参数：{{entity.paramid}}</td>
+		                                 <td><button type="button" class="btn btn-warning btn-lg  " data-toggle="modal" data-target="#sellerModal" >设备参数</button>  </td>
 		                                 <td>查看密钥和出入库Key</td>
-		                                 <td>{{entity.saleactivate}}<div class="alert {{isSaleactivate(entity.saleactivate)==1? 'alert-success':'alert-warning'}}" role="alert">...</div></td>
+		                                 <td><div id="entitySaleactivate" class="alert {{entity.saleactivate==1 ? 'alert-success':'alert-danger'}}" role="alert">{{isSaleactivate(entity.saleactivate)}}</div></td>
 		                                  <td class="text-center">  
-		                                  	<button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal" >修改</button>       
-		                                    <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#sellerModal" >IOT信息</button>  
-		                                 	<button type="button" class="btn btn-danger btn-xs"  data-toggle="modal" data-target="#delete" >删除</button>   
+		                                  	<button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal" ng-click="findOne(entity.id)" ng-if="authoCode==3" >修改</button>
+
+		                                 	<button type="button" class="btn btn-danger btn-xs"  data-toggle="modal" data-target="#delete" ng-if="authoCode==3" >删除</button>
 		                                 	
 		                                  </td>
 			                          </tr>
@@ -106,15 +112,10 @@
 			                      </tbody>
 			                  </table>
 			                  <!--数据列表/-->                        
-
                             <!--分页控件-->
                             <tm-pagination conf="paginationConf"></tm-pagination>
                         </div>
                         <!-- 数据表格 /-->
-
-
-
-                        
                      </div>
                     <!-- /.box-body -->
                     
@@ -125,50 +126,30 @@
 	<div class="modal-content">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			<h3 id="myModalLabel">站点新增</h3>
+			<h3 id="myModalLabel">设备新增</h3>
 		</div>
 		<div class="modal-body">							
-			
+
 			<table class="table table-bordered table-striped"  width="800px">
+
 		      	<tr>
-		      		<td>站点ID</td>
-		      		<td><input  class="form-control" placeholder="站点ID">  </td>
-		      	</tr>
-		      	<tr>
-		      		<td>网关产地信息</td>
-		      		<td><input  class="form-control" placeholder="网关产地信息">  </td>
+		      		<td>设备分类</td>
+		      		<td>
+                        <select select2 ng-model="deivceEntity.typeid" class="form-control" placeholder="选择分类">
+                            <option value="{{ item.id }}" ng-repeat="item in deviceTypes">{{ item.text }}</option>
+                        </select>
+                    </td>
 		      	</tr>	
 			    <tr>
-		      		<td>省份</td>
-		      		<td><input  class="form-control" placeholder="省份">  </td>
+		      		<td>设备参数</td>
+		      		<td><input  class="form-control" placeholder="设备参数" ng-model="deivceEntity.paramid">  </td>
 		      	</tr>		      
 		       	 <tr>
-		      		<td>城市</td>
-		      		<td><input  class="form-control" placeholder="城市">  </td>
+		      		<td>设备名称</td>
+		      		<td><input  class="form-control" placeholder="设备名称" ng-model="deivceEntity.devicename">  </td>
 		      	</tr>		      
-		       	
-		       	 <tr>
-		      		<td>详细地址</td>
-		      		<td><input  class="form-control" placeholder="详细地址">  </td>
-		      	</tr>		      
-		       	
-		       	 <tr>
-		      		<td>Iot设备Id</td>
-		      		<td><input  class="form-control" placeholder="Iot设备Id">  </td>
-		      	</tr>		      
-		       	 <tr>
-		      		<td>设备识别码</td>
-		      		<td><input  class="form-control" placeholder="设备识别码">  </td>
-		      	</tr>		      
-		       	 <tr>
-		      		<td>预置密钥</td>
-		      		<td><input  class="form-control" placeholder="预置密钥">  </td>
-		      	</tr>		      
-		       	 <tr>
-		      		<td>Iot产品信息编号</td>
-		      		<td><input  class="form-control" placeholder="Iot产品信息编号">  </td>
-		      	</tr>
-			 </table>				
+
+			 </table>
 			
 		</div>
 		<div class="modal-footer">						
@@ -192,10 +173,7 @@
 			
 			 <ul class="nav nav-tabs">
 			  <li class="active"><a href="#home" data-toggle="tab">IOT设备产品模型信息</a></li>
-			<!--  <li><a href="#linkman" data-toggle="tab">联系人</a></li>
-			  <li><a href="#certificate" data-toggle="tab">证件</a></li>
-			  <li><a href="#ceo" data-toggle="tab">法定代表人</a></li>
-			  <li><a href="#bank" data-toggle="tab">开户行</a></li>-->
+
 			</ul>							
 			
 			<!-- 选项卡开始 -->         
@@ -237,76 +215,10 @@
 			      	</tr>
 			      </table>			      
       			</div>	
-			    <!--<div class="tab-pane fade" id="linkman">
-			    	<br>
-					<table class="table table-bordered table-striped" >
-			      	<tr>
-			      		<td>联系人姓名</td>
-			      		<td>王美琪</td>
-			      	</tr>
-			      	<tr>
-			      		<td>联系人QQ</td>
-			      		<td>78223322</td>
-			      	</tr>
-			      	<tr>
-			      		<td>联系人手机</td>
-			      		<td>13500223322</td>
-			      	</tr>
-			      	<tr>
-			      		<td>联系人E-Mail</td>
-			      		<td>78223322@qq.com</td>
-			      	</tr>
-			      </table>
-			    </div>
-			    <div class="tab-pane fade" id="certificate">
-					<br>
-					<table class="table table-bordered table-striped" >
-				      	<tr>
-				      		<td>营业执照号</td>
-				      		<td>330106000109206</td>
-				      	</tr>
-				      	<tr>
-				      		<td>税务登记证号</td>
-				      		<td>0292039393011</td>
-				      	</tr>
-				      	<tr>
-				      		<td>组织机构代码证号</td>
-				      		<td>22320320302421</td>
-				      	</tr>				      	
-			     	</table>
-			    </div>
-			    <div class="tab-pane fade" id="ceo">
-					<br>
-					<table class="table table-bordered table-striped" >
-				      	<tr>
-				      		<td>法定代表人</td>
-				      		<td>王小聪</td>
-				      	</tr>
-				      	<tr>
-				      		<td>法定代表人身份证号</td>
-				      		<td>211030198503223122</td>
-				      	</tr>					   			      	
-			     	</table>
-			    </div>
-			    <div class="tab-pane fade" id="bank">
-					<br>
-					<table class="table table-bordered table-striped" >
-				      	<tr>
-				      		<td>开户行名称</td>
-				      		<td>中国建设银行北京市分行</td>
-				      	</tr>
-				      	<tr>
-				      		<td>开户行支行</td>
-				      		<td>海淀支行</td>
-				      	</tr>		
-				      	<tr>
-				      		<td>银行账号</td>
-				      		<td>999000111222</td>
-				      	</tr>			   			      	
-			     	</table>					
+
 			    </div>-->
   			    </div> 			
-           <!-- 选项卡结束 -->          
+
 			
 			
 		</div>

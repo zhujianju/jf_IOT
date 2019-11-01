@@ -61,7 +61,7 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
         return deviceTypeMapper.selectOne(deviceType);    }
 
     /**
-     * 查询设备，查询所有设备，一般用于管理员操作
+     * 查询设备，查询所有设备分类，一般用于管理员操作
      * @return
      */
     @Override

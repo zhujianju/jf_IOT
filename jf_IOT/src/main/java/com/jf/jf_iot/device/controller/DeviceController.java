@@ -28,4 +28,8 @@ public class DeviceController {
         PageResult page1 = deviceService.findPage(page, rows, device, user);
         return ResponseEntity.ok(page1);
     }
+    @GetMapping("findOne/{id}")
+    public ResponseEntity<Device> findOne(@PathVariable("id") Integer id){
+      return ResponseEntity.ok(deviceService.findOne(id));
+    }
 }

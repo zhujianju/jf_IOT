@@ -8,7 +8,7 @@ app.service('deviceService',function ($http) {
 
     //根据id查询单个
     this.findOne=function (id) {
-        return $http.get("../device/+"+id);
+        return $http.get("../device/findOne/"+id);
     }
     //增加
     this.add=function(entity){
