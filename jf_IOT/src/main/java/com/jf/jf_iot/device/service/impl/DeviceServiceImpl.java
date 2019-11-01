@@ -44,8 +44,7 @@ public class DeviceServiceImpl implements DeviceService {
         List<Device> devices=null;
         //用户权限判断
         //1.当前用户没有权限
-
-        if (user.getAutho() == null){
+        if (user.getAutho() == null || user.getAutho()==0){
                 throw new IOTException(ExceptionEnum.USER_NOT_AUTHO);
         }
 
@@ -62,6 +61,7 @@ public class DeviceServiceImpl implements DeviceService {
 
              devices = deviceMapper.queryDeviceByUserId(user.getId(), device.getTypeid(), device.getDevicename());
         }
+        //没有查询到设备
         if(CollectionUtils.isEmpty(devices)){
             throw new IOTException(ExceptionEnum.DEVICE_NOT_FOND);
         }

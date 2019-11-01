@@ -73,8 +73,30 @@ app.controller('baseController',function($scope,$http,$cookieStore){
     }
 
 	//----------查询数据字典的通用方法
-    //初始化方法（站点。设备。设备类型。通道）
+    //初始化方法（）
+    $scope.initSDDC=function(){
+        findDevcieType();
+    }
 
+    /*设备类型下拉框设置*/
+    $scope.deviceTypes=[];
+    //查询所有设备类型
+    findDevcieType=function () {
+        $http.get('../deviceType/findSelect').success(
+            function(response){
+                $scope.deviceTypes=response;
+            }
+        );
+    }
+
+    /*定义设备类型的数据字典转换的方法*/
+    $scope.findDeviceTypeText=function (id) {
+        for (var i=0;i<$scope.deviceTypes.length;i++){
+            if($scope.deviceTypes[i].id==id){
+                return $scope.deviceTypes[i].text;
+            }
+        }
+    }
 
 	//---------------结束
 

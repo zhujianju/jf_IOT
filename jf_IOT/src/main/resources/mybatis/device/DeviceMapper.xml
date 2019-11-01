@@ -13,10 +13,10 @@
          con_device_user
          <where>
          userId = #{userId})
-             <if test="typid != null">
+             <if test="typid != null and typid!=''">
                 AND cd.typeId = #{typid}
              </if>
-             <if test="deviceName != null">
+             <if test="deviceName != null and deviceName!=''">
                 AND cd.deviceName LIKE "%"#{deviceName}"%"
              </if>
          </where>

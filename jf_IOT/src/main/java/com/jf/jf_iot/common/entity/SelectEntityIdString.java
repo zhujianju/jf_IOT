@@ -8,9 +8,9 @@ import java.io.Serializable;
  * 用于select2下拉框和数据字典
  */
 @Data
-public class SelectEntity implements Serializable {
+public class SelectEntityIdString implements Serializable {
 
-    private Long id;
+    private String id;
     private String text;
 
 }

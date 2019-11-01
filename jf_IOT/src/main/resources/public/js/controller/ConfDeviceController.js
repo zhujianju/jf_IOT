@@ -20,10 +20,14 @@ app.controller('deviceController',function ($scope,$controller,deviceService) {
             function(response){
                 $scope.list=response.items;
                 $scope.paginationConf.totalItems=response.total;//更新总记录数
-                console.log( "$scope.list");
-                console.log( $scope.list.devicename);
             }
-        );
+        ).error(function (error) {
+          console.log(error);
+            if(error.status==404){
+                alert("没有查询到设备");
+                $scope.list=null;
+            }
+        });
     }
 
     //查询实体
@@ -73,54 +77,15 @@ app.controller('deviceController',function ($scope,$controller,deviceService) {
             );
         }
     }
-
-
-    //初始化方法
-    $scope.findSelect=function(){
-        findSataion();
-        findCommunicate();
-        findDevcieType();
-    }
-
-
-    /*站点下拉框设置*/
-    $scope.stationList=[];
-    //查询所有站点
-    findSataion=function () {
-        deviceService.findSataion().success(
-            function(response){
-                $scope.stationList= response;
+    $scope.saleactivate=[{id:1,text:'已激活'},{id:0,text:'未激活'}];
+    /*定义设备类型的数据字典转换的方法*/
+    $scope.isSaleactivate=function (id) {
+        for (var i=0;i<$scope.saleactivate.length;i++){
+            if($scope.saleactivate[i].id==id){
+                return $scope.saleactivate[i].text;
             }
-        );
+        }
     }
-
-
-
-    /*类型下拉框设置*/
-    $scope.deviceTypes=[]
-    //查询所有设备类型
-    findDevcieType=function () {
-        deviceService.findDevcieType().success(
-            function(response){
-                $scope.deviceTypes=response;
-            }
-        );
-    }
-
-    /*通讯下拉框设置*/
-    $scope.communicates=[];
-    //查询所有通道类型
-    findCommunicate=function () {
-        deviceService.findCommunicate().success(
-            function(response){
-                $scope.communicates= response;
-            }
-        );
-    }
-
-    $scope.enableList=[{id:1,text:'启用'},{id:0,text:'禁用'}];
-
-    $scope.checksList=[{id:0,text:'不需要对设备进行校验'},{id:1,text:'需要对设备进行校验'}];
 
 
 

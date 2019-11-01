@@ -3,6 +3,7 @@ package com.jf.jf_iot.device.mapper;
 import com.jf.jf_iot.device.entity.Device;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import tk.mybatis.mapper.additional.idlist.IdListMapper;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;

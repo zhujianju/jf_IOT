@@ -23,10 +23,7 @@ app.service('deviceService',function ($http) {
         return $http.get('../device/delete.m?id='+id);
     }
 
-    //为select2提供所有的设备类型
-    this.findDevcieType=function () {
-        return $http.get('../device/findDevcieType.m');
-    }
+
 
 
 });
