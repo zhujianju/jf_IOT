@@ -53,14 +53,14 @@
 
                         <!-- 数据表格 -->
                         <div class="table-box">
-
+                          111  {{deivceEntity}}
                             <!--工具栏-->
                             <div class="pull-left">
                                 <div class="form-group form-inline">
                                     <div class="btn-group disabled"  >
-                                        <button type="button" ng-if="authoCode==3" class="btn btn-default" title="新建" data-toggle="modal" data-target="#editModal" ><i class="fa fa-file-o"></i> 新建</button>
+                                        <button type="button" ng-click="deivceEntity={}" ng-if="authoCode==3" class="btn btn-default" title="新建" data-toggle="modal" data-target="#editModal"  ><i class="fa fa-file-o"></i> 新建</button>
                          
-                                        <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i class="fa fa-refresh"></i> 刷新</button>
+                                        <button type="button"  class="btn btn-default" title="刷新" onclick="window.location.reload();"><i class="fa fa-refresh"></i> 刷新</button>
                                     </div>
                                 </div>
                             </div>
@@ -98,7 +98,7 @@
 			                          <tr ng-repeat="entity in list">
 				                          <td>{{entity.devicename}}</td>
 									      <td>{{findDeviceTypeText(entity.typeid)}}</td>
-		                                 <td><button type="button" class="btn btn-warning btn-lg  " data-toggle="modal" data-target="#sellerModal" >设备参数</button>  </td>
+		                                 <td><button type="button" class="btn btn-warning btn-lg"   data-toggle="modal" data-target="#sellerModal" >设备参数</button>  </td>
 		                                 <td>查看密钥和出入库Key</td>
 		                                 <td><div id="entitySaleactivate" class="alert {{entity.saleactivate==1 ? 'alert-success':'alert-danger'}}" role="alert">{{isSaleactivate(entity.saleactivate)}}</div></td>
 		                                  <td class="text-center">  
@@ -126,7 +126,7 @@
 	<div class="modal-content">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			<h3 id="myModalLabel">设备新增</h3>
+			<h3 id="myModalLabel">{{deivceEntity.status == 1 ? '修改':'新增'}}设备</h3>
 		</div>
 		<div class="modal-body">							
 
@@ -216,8 +216,9 @@
 			      </table>			      
       			</div>	
 
-			    </div>-->
-  			    </div> 			
+			    </div>
+  			    </div>
+    </div>
 
 			
 			
