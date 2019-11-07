@@ -11,11 +11,20 @@
 <![endif]-->
     <!--引入需要的js-->
     <script type="text/javascript" src="../plugins/angularjs/angular.min.js"></script>
+    <!-- 分页组件开始 -->
+    <script src="../plugins/angularjs/pagination.js"></script>
+    <link rel="stylesheet" href="../plugins/angularjs/pagination.css">
+    <!-- 分页组件结束 -->
+    <!-- 引入自定义模块js -->
     <script type="text/javascript" src="../js/base_pagination.js"></script>
+    <!-- 引入自定义service的js -->
+    <script type="text/javascript" src="../js/service/ConfDeviceService.js"></script>
     <!-- 引入自定义controller的js -->
     <script type="text/javascript" src="../js/controller/baseController.js"></script>
+    <script type="text/javascript" src="../js/controller/ConfDeviceController.js"></script>
+
 </head>
-<body  ng-app="jfiot" ng-controller="baseController">
+<body  ng-app="jfiot" ng-controller="deviceController">
 <div id="wrapper"><a class="logo" href="/"></a>
   <div id="main">
     <header id="header">
