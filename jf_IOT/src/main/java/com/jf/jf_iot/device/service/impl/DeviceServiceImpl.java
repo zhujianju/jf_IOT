@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
 
+import java.io.IOException;
 import java.util.List;
 @Service
 public class DeviceServiceImpl implements DeviceService {
@@ -43,6 +44,9 @@ public class DeviceServiceImpl implements DeviceService {
         //定义集合用于接收查询结果。
         List<Device> devices=null;
         //用户权限判断
+        if(user== null){
+            throw new IOTException(ExceptionEnum.USER_NOT_LOGIN);
+        }
         //1.当前用户没有权限
         if (user.getAutho() == null || user.getAutho()==0){
                 throw new IOTException(ExceptionEnum.USER_NOT_AUTHO);
@@ -97,17 +101,20 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public int deleteById(Integer id) {
-        return 0;
+
+        return  deviceMapper.deleteByPrimaryKey(id);
     }
 
     @Override
     public int updateByid(Device device) {
-        return 0;
+
+        return deviceMapper.updateByPrimaryKey(device);
     }
 
     @Override
     public int insert(Device device) {
-        return 0;
+        device.setSaleactivate(0);
+        return deviceMapper.insert(device);
     }
 
 

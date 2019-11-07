@@ -12,15 +12,15 @@ app.service('deviceService',function ($http) {
     }
     //增加
     this.add=function(entity){
-        return  $http.post('../device/save.m',entity );
+        return  $http.post('../device',entity );
     }
     //修改
     this.update=function(entity){
-        return  $http.post('../device/update.m',entity );
+        return  $http.put('../device',entity );
     }
     //删除
     this.dele=function(id){
-        return $http.get('../device/delete.m?id='+id);
+        return $http.delete('../device/'+id);
     }
 
 
