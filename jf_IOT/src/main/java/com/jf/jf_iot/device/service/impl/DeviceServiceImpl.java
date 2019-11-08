@@ -117,5 +117,13 @@ public class DeviceServiceImpl implements DeviceService {
         return deviceMapper.insert(device);
     }
 
+    @Override
+    public List<User> findBindUser(Integer id) {
+        List<User> users = deviceMapper.findBindUser(id);
+        for (User user : users) {
+            System.out.println(user);
+        }
+        return users;
+    }
 
 }

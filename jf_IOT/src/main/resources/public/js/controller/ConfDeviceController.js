@@ -69,6 +69,15 @@ app.controller('deviceController',function ($scope,$controller,deviceService) {
             });
         }
     }
+    //查看设备所绑定的用户
+    $scope.findBindUser=function(id){
+        deviceService.findBindUser(id).success(function (response) {
+            
+        }).error(function (error) {//报错时
+
+        });
+    }
+
     $scope.saleactivate=[{id:1,text:'已激活'},{id:0,text:'未激活'}];
     /*定义设备类型的数据字典转换的方法*/
     $scope.isSaleactivate=function (id) {

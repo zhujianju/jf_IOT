@@ -13,6 +13,7 @@ public enum  ExceptionEnum {
     USER_NOT_FOND(404,"用户不存在"),
     USER_NOT_LOGIN(404,"用户未登录"),
     USER_NOT_AUTHO(405,"用户没有足够的配权限"),
+    USER_NOT_ROOT(405,"需要管理员才能进行此操作"),
     USER_PASSWORD_ERROR(405,"用户密码错误"),
     //设备类异常
     DEVICE_NOT_FOND(404,"没有查询到设备"),

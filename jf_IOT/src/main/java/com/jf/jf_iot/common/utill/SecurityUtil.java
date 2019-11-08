@@ -28,7 +28,7 @@ public class SecurityUtil {
      */
     public static void isRoot(HttpSession session){
         if(SecurityUtil.getAutho(session)!=3 ){//判断权限是否够
-            throw new IOTException(ExceptionEnum.USER_NOT_AUTHO);
+            throw new IOTException(ExceptionEnum.USER_NOT_ROOT);
         }
     }
 

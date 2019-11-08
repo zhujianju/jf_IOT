@@ -20,9 +20,10 @@ import java.util.List;
 public class DeviceController {
     @Autowired
     private DeviceService deviceService;
-
+    @Autowired
+    HttpSession session;
     @PostMapping("page")
-    public ResponseEntity<PageResult<Device>> querDeviceByPage(@RequestBody(required = false) Device device, HttpSession session, int page, int rows){
+    public ResponseEntity<PageResult<Device>> querDeviceByPage(@RequestBody(required = false) Device device, int page, int rows){
         User user = (User) session.getAttribute("user");
 
         PageResult page1 = deviceService.findPage(page, rows, device, user);
@@ -37,7 +38,7 @@ public class DeviceController {
      * 新增的方法
      */
     @PostMapping()
-    public ResponseEntity<Void> saveDevice(@RequestBody Device device, HttpSession session){
+    public ResponseEntity<Void> saveDevice(@RequestBody Device device){
         //检验权限,不为管理员则抛异常
         SecurityUtil.isRoot(session);
         deviceService.insert(device);
@@ -47,7 +48,7 @@ public class DeviceController {
      * 修改的方法
      */
     @PutMapping()
-    public ResponseEntity<Void> updateDevice(@RequestBody Device device, HttpSession session){
+    public ResponseEntity<Void> updateDevice(@RequestBody Device device){
         //检验权限,不为管理员则抛异常
         SecurityUtil.isRoot(session);
         deviceService.updateByid(device);
@@ -57,10 +58,21 @@ public class DeviceController {
      * 删除的方法
      */
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteDevice(@PathVariable("id") Integer id, HttpSession session){
+    public ResponseEntity<Void> deleteDevice(@PathVariable("id") Integer id){
         //检验权限,不为管理员则抛异常
         SecurityUtil.isRoot(session);
         deviceService.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    /**
+     * 根据设备id，查询当前设备下的所有用户
+     */
+    @GetMapping("findUser/{id}")
+    public ResponseEntity<List<User>> findBindUser(@PathVariable("id") Integer id, HttpSession session){
+        //检验权限,不为管理员则抛异常
+        SecurityUtil.isRoot(session);
+
+        return  ResponseEntity.ok(deviceService.findBindUser(id));
     }
 }
