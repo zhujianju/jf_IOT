@@ -22,7 +22,10 @@ app.service('deviceService',function ($http) {
     this.dele=function(id){
         return $http.delete('../device/'+id);
     }
-
+    //查找当前设备所绑定的用户
+    this.findBindUser=function (id) {
+        return $http.get('../device/findUser/'+id);
+    }
 
 
 

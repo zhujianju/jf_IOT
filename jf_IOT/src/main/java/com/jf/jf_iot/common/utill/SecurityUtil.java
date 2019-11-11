@@ -16,6 +16,9 @@ public class SecurityUtil {
      */
     public static Integer getAutho(HttpSession session){
         User user = (User) session.getAttribute("user");
+        if(user == null){
+            throw new IOTException(ExceptionEnum.USER_NOT_LOGIN);
+        }
         Integer autho = user.getAutho();
         if(autho == null){
             throw new IOTException(ExceptionEnum.USER_NOT_AUTHO);

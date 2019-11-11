@@ -50,8 +50,7 @@ app.controller('deviceController',function ($scope,$controller,deviceService) {
             }
         ).error(
             function (error) {
-                alert(error.message);
-                console.log(error);
+                $scope.getError(error);
             }
         );
     }
@@ -65,16 +64,16 @@ app.controller('deviceController',function ($scope,$controller,deviceService) {
                         $scope.reloadList();//刷新列表
                 }
             ).error(function (error) {
-                alert(error);
+                $scope.getError(error);
             });
         }
     }
     //查看设备所绑定的用户
     $scope.findBindUser=function(id){
         deviceService.findBindUser(id).success(function (response) {
-            
+            $scope.bindUserEntity=response;
         }).error(function (error) {//报错时
-
+            $scope.getError(error);
         });
     }
 

@@ -13,6 +13,12 @@ app.controller('errorController',function ($scope,$controller) {
             $scope.errorEntityt.code=001; //根据不同的code来处理不同的错误信息
 
         }
+        if(error.status==405 && error.message=='需要管理员才能进行此操作'){
+            alert(error.message);
+        }
+        if(error.status==500){
+           alert("系统内部错误");
+        }
     }
 
 

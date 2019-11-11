@@ -20,6 +20,8 @@ public class Device {
     private String devicesecret;
     private Integer saleactivate;
     @Transient
+    private Boolean isBind;//用户判定设备是否被绑定
+    @Transient
     private DeviceType deviceType;
     @Transient
     private DeviceParam deviceParam;

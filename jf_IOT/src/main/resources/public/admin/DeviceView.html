@@ -175,7 +175,7 @@
                   <h4 class="modal-title" >设备所绑定的用户详情</h4>
               </div>
               <div class="modal-body">
-                  <table  class="table table-bordered table-striped table-hover dataTable" ng-if="list != null && errorEntityt.code==000">
+                  <table  class="table table-bordered table-striped table-hover dataTable" >
                       <thead>
                       <tr>
                           <th class="sorting_asc">用户id</th>
@@ -185,11 +185,11 @@
                       </tr>
                       </thead>
                       <tbody>
-                      <tr ng-repeat="">
-                          <td> </td>
-                          <td> </td>
-                          <td></td>
-                          <td></td>
+                      <tr ng-repeat="entity in bindUserEntity">
+                          <td>{{entity.id}} </td>
+                          <td>{{entity.name}} </td>
+                          <td>{{entity.account}}</td>
+                          <td>{{entity.autho}}</td>
                       </tr>
 
                       </tbody>
