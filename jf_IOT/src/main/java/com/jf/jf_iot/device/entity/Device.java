@@ -12,19 +12,19 @@ import javax.persistence.Transient;
 public class Device {
     @Id
     @KeySql(useGeneratedKeys = true)
-    private Integer id;
-    private String typeid;
-    private Integer paramid;
-    private String productkey;
-    private String devicename;
-    private String devicesecret;
-    private Integer saleactivate;
+    private Integer id;//设备Id
+    private String typeid;//设备分类id
+    private Integer paramid;//参数id，关联参数表id
+    private String productkey;//出入库key
+    private String devicename;//设备名称
+    private String devicesecret;//密钥
+    private Integer saleactivate;//销售激活状态0.未激活 1.已激活
     @Transient
     private Boolean isBind;//用户判定设备是否被绑定
     @Transient
-    private DeviceType deviceType;
+    private DeviceType deviceType;//设备类型
     @Transient
-    private DeviceParam deviceParam;
+    private DeviceParam deviceParam;//设备参数表
 
 
 }

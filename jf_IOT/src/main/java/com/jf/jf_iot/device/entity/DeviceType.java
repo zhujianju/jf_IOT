@@ -11,7 +11,7 @@ import javax.persistence.Table;
 public class DeviceType {
     @Id
     @KeySql(useGeneratedKeys = true)
-    private Integer id;
-    private String typekey;
-    private String typename;
+    private Integer id;//id
+    private String typekey;//设备分类key
+    private String typename;//分类名称
 }
