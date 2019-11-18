@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class RoleController {
     @RequestMapping("/index")
     public String Hello(){
-        System.out.println("RoleController.Hello()");
         return "/login/index";
     }
     @RequestMapping("/thymeleaf")
