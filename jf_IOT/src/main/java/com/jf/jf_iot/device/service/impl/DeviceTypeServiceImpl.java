@@ -11,6 +11,7 @@ import com.jf.jf_iot.device.mapper.DeviceMapper;
 import com.jf.jf_iot.device.mapper.DeviceTypeMapper;
 import com.jf.jf_iot.device.service.DeviceTypeService;
 import com.jf.jf_iot.user.entity.User;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -75,7 +76,23 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
 
     @Override
     public PageResult findPage(int pageNum, int pageSize, DeviceType deviceType) {
-        return null;
+        PageHelper.startPage(pageNum,pageSize);
+        Example example=new Example(DeviceType.class);
+        Example.Criteria criteria = example.createCriteria();
+        //如果传入的对象不为null
+        if(deviceType != null){
+            if(StringUtils.isNotBlank(deviceType.getTypename())){
+                criteria.andLike("typename","%"+deviceType.getTypename()+"%");
+            }
+        }
+        List<DeviceType> deviceTypes = deviceTypeMapper.selectByExample(example);
+        if(CollectionUtils.isEmpty(deviceTypes)){
+            throw new IOTException(ExceptionEnum.DEVICETYOE_NOT_FOND);
+        }
+        //解析分页对象
+        PageInfo<DeviceType> info=new PageInfo<>(deviceTypes);
+
+        return new PageResult(info.getTotal(),deviceTypes);
     }
     @Override
     public PageResult findPage(int pageNum, int pageSize, DeviceType deviceType,User user) {
@@ -113,16 +130,18 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
 
     @Override
     public int deleteById(Integer id) {
-        return 0;
+        Example example = new Example(DeviceType.class);
+        example.createCriteria().andEqualTo("id",id);
+        return  deviceTypeMapper.deleteByExample(example);
     }
 
     @Override
     public int updateByid(DeviceType deviceType) {
-        return 0;
+        return deviceTypeMapper.updateByPrimaryKey(deviceType);
     }
 
     @Override
     public int insert(DeviceType deviceType) {
-        return 0;
+        return deviceTypeMapper.insert(deviceType);
     }
 }

@@ -17,6 +17,9 @@ public enum  ExceptionEnum {
     USER_PASSWORD_ERROR(405,"用户密码错误"),
     //设备类异常
     DEVICE_NOT_FOND(404,"没有查询到设备"),
+
+    //设备类型异常
+    DEVICETYOE_NOT_FOND(404,"没有查询到设备类型")
     ;
     private int code;//异常状态吗
     private String message;//异常信息

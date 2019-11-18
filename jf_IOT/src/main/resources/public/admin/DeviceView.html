@@ -72,7 +72,7 @@
                                 </select>
                                </div>
                                 <div style="width: 200px;margin-left: 160px "  class="input-group">
-                                    <span class="input-group-addon">事件名称</span>
+                                    <span class="input-group-addon">设备名称</span>
                                     <input type="text" class="form-control" ng-model="searchEntity.devicename" ng-change="reloadList()" aria-label="Amount (to the nearest dollar)">
                                 </div>
                                 <div style="margin-left: 370px;margin-top: -35px"  class="input-group"><button class="btn btn-default" ng-click="reloadList()" >查询</button></div>
@@ -103,7 +103,7 @@
 		                                 <td><div id="entitySaleactivate" class="alert {{entity.saleactivate==1 ? 'alert-success':'alert-danger'}}" role="alert">{{isSaleactivate(entity.saleactivate)}}</div></td>
 		                                  <td class="text-center">
 
-                                            <button type="button" class="btn bg-info btn-primary" data-toggle="modal" data-target="#userModal" ng-click="findBindUser(entity.id)" ng-if="authoCode==3" >设备绑定的用户</button>
+                                            <button type="button" class="btn bg-info btn-primary" data-toggle="modal" data-target="#userModal" ng-click="findBindUser(entity.id)" ng-if="authoCode==3 && entity.isBind" >设备绑定的用户</button>
 		                                  	<button type="button" class="btn bg-olive btn-primary" data-toggle="modal" data-target="#editModal" ng-click="findOne(entity.id)" ng-if="authoCode==3" >修改</button>
 
 		                                 	<button type="button" class="btn btn-danger btn-primary"  data-toggle="modal"  ng-show="authoCode==3" ng-click="delete(entity.id)" >删除</button>

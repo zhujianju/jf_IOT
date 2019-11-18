@@ -17,9 +17,15 @@ public interface DeviceMapper extends Mapper<Device> {
 
     /**
      * 查询当前设备属于哪些拥有者
+     * 根据设备id，在用户设备关联表中查询出对应的关联用户。多对多关系，所以用户可以存在多个
      * @param id
      * @return
      */
     @Select("select sys_user.* from sys_user where id in (select userId from con_device_user where deviceId = #{id})")
     List<User> findBindUser(Integer id);
+
+
+
+
+
 }
