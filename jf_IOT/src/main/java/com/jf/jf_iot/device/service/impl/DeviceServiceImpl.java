@@ -57,6 +57,8 @@ public class DeviceServiceImpl implements DeviceService {
             //设置查询条件
             setDeviceExample(device,criteria);
             devices = deviceMapper.selectByExample(example);
+            //用于设置是否绑定用户
+            devices=isBindUser(devices);
         }
         //3.当前登陆为用户/经销商。
         if(user.getAutho() == 1 || user.getAutho() == 2){
@@ -120,10 +122,24 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public List<User> findBindUser(Integer id) {
         List<User> users = deviceMapper.findBindUser(id);
-        for (User user : users) {
-            System.out.println(user);
-        }
+
         return users;
+    }
+
+    /**
+     * 用于设置，设备是否绑定了用户
+     * @param devices
+     */
+    private List<Device> isBindUser(List<Device> devices){
+        for (Device device : devices) {
+            List<User> users = findBindUser(device.getId());
+            if(users !=null && users.size()>0){
+                device.setIsBind(true);
+            }else {
+                device.setIsBind(false);
+            }
+        }
+        return devices;
     }
 
 }
