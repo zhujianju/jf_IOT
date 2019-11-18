@@ -95,35 +95,6 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
         return new PageResult(info.getTotal(),deviceTypes);
     }
     @Override
-    public PageResult findPage(int pageNum, int pageSize, DeviceType deviceType,User user) {
-        //分页
-        PageHelper.startPage(pageNum,pageSize);
-        Example example=new Example(Device.class);
-        Example.Criteria criteria = example.createCriteria();
-        //定义集合用于接收查询结果。
-        List<DeviceType> deviceTypes=null;
-        //用户权限判断
-        if(user== null){
-            throw new IOTException(ExceptionEnum.USER_NOT_LOGIN);
-        }
-        //1.当前用户没有权限
-        if (user.getAutho() == null || user.getAutho()==0){
-            throw new IOTException(ExceptionEnum.USER_NOT_AUTHO);
-        }
-
-        //2.当前为管理员。可查询所有的设备
-        if(user.getAutho() == 3){
-            //设置查询条件
-            deviceTypes = deviceTypeMapper.selectByExample(example);
-        }else {
-            throw new IOTException(ExceptionEnum.USER_NOT_AUTHO);
-        }
-        //解析分页对象
-        PageInfo<DeviceType> info=new PageInfo<>(deviceTypes);
-        return new PageResult(info.getTotal(),deviceTypes);
-    }
-
-    @Override
     public DeviceType findOne(Integer id) {
         return null;
     }

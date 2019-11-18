@@ -10,6 +10,5 @@ import java.util.List;
 public interface DeviceTypeService extends BaseService<DeviceType> {
 
     public List<DeviceType> findAll(User user);
-    public PageResult findPage(int pageNum, int pageSize, DeviceType deviceType, User user);
     public DeviceType selectOneByKey(String key);
 }
