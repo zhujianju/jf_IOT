@@ -1,6 +1,7 @@
 package com.jf.jf_iot.common.service;
 
 import com.jf.jf_iot.common.entity.PageResult;
+import com.jf.jf_iot.user.entity.User;
 
 import java.util.List;
 
@@ -43,13 +44,13 @@ public interface BaseService <T>{
      * @param t
      * @return
      */
-    public int updateByid(T t);
+    public int updateByid(T t,User user);
 
     /**
      * 新增
      * @param t
      * @return
      */
-    public int insert(T t);
+    public int insert(T t, User user);
 
 }

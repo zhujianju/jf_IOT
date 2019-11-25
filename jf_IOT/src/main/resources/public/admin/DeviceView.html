@@ -25,11 +25,11 @@
     <!-- 引入自定义模块js -->
     <script type="text/javascript" src="../js/base_pagination.js"></script>
     <!-- 引入自定义service的js -->
-    <script type="text/javascript" src="../js/service/ConfDeviceService.js"></script>
+    <script type="text/javascript" src="../js/service/DeviceService.js"></script>
     <!-- 引入自定义controller的js -->
     <script type="text/javascript" src="../js/controller/baseController.js"></script>
     <script type="text/javascript" src="../js/controller/ErrorController.js"></script>
-    <script type="text/javascript" src="../js/controller/ConfDeviceController.js"></script>
+    <script type="text/javascript" src="../js/controller/DeviceController.js"></script>
 
     <!--引入select2-->
     <link rel="stylesheet" href="../plugins/select2/select2.css" />
@@ -67,13 +67,13 @@
                                 <div class="input-group" style="width:1000px;" >
                                
                                 <div style="width: 135px;margin-left: 15px ">
-                                <select select2 ng-model="searchEntity.typeid" ng-change="reloadList()" class="form-control" placeholder="设备">
+                                <select select2 ng-model="searchEntity.typeid" ng-change="reloadList()" class="form-control" placeholder="设备分类">
                                     <option value="{{ item.id }}" ng-repeat="item in deviceTypes">{{ item.text }}</option>
                                 </select>
                                </div>
                                 <div style="width: 200px;margin-left: 160px "  class="input-group">
                                     <span class="input-group-addon">设备名称</span>
-                                    <input type="text" class="form-control" ng-model="searchEntity.devicename" ng-change="reloadList()" aria-label="Amount (to the nearest dollar)">
+                                    <input type="text" class="form-control" ng-model="searchEntity.name" ng-change="reloadList()" aria-label="Amount (to the nearest dollar)">
                                 </div>
                                 <div style="margin-left: 370px;margin-top: -35px"  class="input-group"><button class="btn btn-default" ng-click="reloadList()" >查询</button></div>
                             </div>
@@ -88,25 +88,25 @@
 			                          <tr>
 										  <th class="sorting_asc">设备名称</th>
 									      <th class="sorting">设备分类</th>
-									      <th class="sorting">查看参数</th>
-									      <th class="sorting">设备详情</th>
+									      <th class="sorting" ng-show="authoCode==3" >设备详情</th>
 									      <th class="sorting">是否激活</th>
 					                      <th class="text-center" width="20%">操作</th>
 			                          </tr>
 			                      </thead>
 			                      <tbody>
 			                          <tr ng-repeat="entity in list">
-				                          <td>{{entity.devicename}}</td>
+				                          <td>{{entity.name}}</td>
 									      <td>{{findDeviceTypeText(entity.typeid)}}</td>
-		                                 <td><button type="button" class="btn btn-warning btn-lg"   data-toggle="modal" data-target="#sellerModal" >设备参数</button>  </td>
-		                                 <td>查看密钥和出入库Key</td>
+		                                 <td ng-show="authoCode==3" width="10%">
+                                             <button type="button" class="btn bg-olive btn-info" data-toggle="modal" data-target="#KeyModal" ng-click="findKey(entity)" ng-if="authoCode==3" >查看密钥和Key</button>
+                                         </td>
 		                                 <td><div id="entitySaleactivate" class="alert {{entity.saleactivate==1 ? 'alert-success':'alert-danger'}}" role="alert">{{isSaleactivate(entity.saleactivate)}}</div></td>
 		                                  <td class="text-center">
 
                                             <button type="button" class="btn bg-info btn-primary" data-toggle="modal" data-target="#userModal" ng-click="findBindUser(entity.id)" ng-if="authoCode==3 && entity.isBind" >设备绑定的用户</button>
 		                                  	<button type="button" class="btn bg-olive btn-primary" data-toggle="modal" data-target="#editModal" ng-click="findOne(entity.id)" ng-if="authoCode==3" >修改</button>
 
-		                                 	<button type="button" class="btn btn-danger btn-primary"  data-toggle="modal"  ng-show="authoCode==3" ng-click="delete(entity.id)" >删除</button>
+                                                <button type="button" class="btn btn-danger btn-primary"  data-toggle="modal"  ng-show="authoCode==3" ng-click="delete(entity.id)" >删除</button>
 		                                 	
 		                                  </td>
 			                          </tr>
@@ -142,16 +142,20 @@
                         </select>
                     </td>
 		      	</tr>	
-			    <tr>
-		      		<td>设备参数</td>
-		      		<td><input  class="form-control" placeholder="设备参数" ng-model="deivceEntity.paramid">  </td>
-		      	</tr>		      
 		       	 <tr>
 		      		<td>设备名称</td>
-		      		<td><input  class="form-control" placeholder="设备名称" ng-model="deivceEntity.devicename">  </td>
-		      	</tr>		      
+		      		<td><input  class="form-control" placeholder="设备名称" ng-model="deivceEntity.name">  </td>
+		      	</tr>
+                <tr>
+                    <td>订阅地址</td>
+                    <td><input  class="form-control" placeholder="订阅地址" ng-model="deivceEntity.subscriber">  </td>
+                </tr>
+                <tr>
+                    <td>发布地址</td>
+                    <td><input  class="form-control" placeholder="发布地址" ng-model="deivceEntity.issue">  </td>
+                </tr>
 
-			 </table>
+            </table>
 			
 		</div>
 		<div class="modal-footer">						
@@ -201,6 +205,64 @@
           </div>
       </div>
   </div>
+  <!-- 密钥key显示窗口 -->
+  <div class="modal fade" id="KeyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" >
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                  <h3 id="myModalLabel">高级参数</h3>
+              </div>
+              <div class="modal-body">
+                  <table class="table table-bordered table-striped table-hover dataTable">
+                      <thead>
+                      <tr>
+                          <th class="sorting" width="20%">名称</th>
+                          <th class="sorting">数值</th>
+                      </thead>
+                      <tbody>
+                      <tr>
 
+                          <td  width="20%">
+                             设备绑定名
+                          </td>
+                          <td>
+                              <input readonly class="form-control" placeholder="">
+                          </td>
+                      </tr>
+                      <tr>
+
+                          <td  width="20%">
+                             设备绑定密钥
+                          </td>
+                          <td>
+                              <input readonly class="form-control" placeholder="">
+                          </td>
+                      </tr>
+                      <tr>
+                          <td  width="20%">
+                             出库KEY
+                          </td>
+                          <td>
+                              <input readonly class="form-control" placeholder="">
+                          </td>
+                      </tr>
+                      <tr>
+                          <td  width="20%">
+                              分类KEY
+                          </td>
+                          <td>
+                              <input readonly class="form-control" placeholder="">
+                          </td>
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+              <div class="modal-footer">
+                  <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
+              </div>
+          </div>
+      </div>
+  </div>
 </body>
 </html>

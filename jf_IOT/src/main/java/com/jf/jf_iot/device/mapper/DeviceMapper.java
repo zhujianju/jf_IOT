@@ -13,7 +13,7 @@ public interface DeviceMapper extends Mapper<Device> {
     /**
      * 查询当前登陆用户下所有的设备。
             */
-    List<Device> queryDeviceByUserId(Integer userId, @Param("typid")String typeid,@Param("deviceName")String deviceName);
+    List<Device> queryDeviceByUserId(Integer userId, @Param("typid")Integer typeid,@Param("name")String name);
 
     /**
      * 查询当前设备属于哪些拥有者

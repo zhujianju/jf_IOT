@@ -38,12 +38,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int updateByid(User user) {
+    public int updateByid(User user, User u) {
         return 0;
     }
 
     @Override
     public int insert(User user) {
+        return 0;
+    }
+
+    @Override
+    public int insert(User user, User u) {
         return 0;
     }
 

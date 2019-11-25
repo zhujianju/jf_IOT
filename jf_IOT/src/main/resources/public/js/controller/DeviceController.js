@@ -3,14 +3,15 @@ app.controller('deviceController',function ($scope,$controller,deviceService) {
     $controller('baseController',{$scope:$scope});//继承通用的控制层
     $controller('errorController',{$scope:$scope});//继承通用的异常控制层
     //分页
-    $scope.findPage=function(page,rows){
+  /*  $scope.findPage=function(page,rows){
         deviceService.findPage(page,rows).success(
             function(response){
                 $scope.list=response.rows;
                 $scope.paginationConf.totalItems=response.total;//更新总记录数
             }
         );
-    }
+    }*/
+
     $scope.searchEntity={};//定义搜索对象
     //搜索并分页
     $scope.search=function(page,rows){
@@ -100,6 +101,15 @@ app.controller('deviceController',function ($scope,$controller,deviceService) {
             return false;
         }*/
         save();
+    }
+
+    /**
+     * 查找key
+     */
+    $scope.findKey=function (entity) {
+        deviceService.findOneType(entity.typeid).success(function () {
+
+        }).error();
     }
 
 });

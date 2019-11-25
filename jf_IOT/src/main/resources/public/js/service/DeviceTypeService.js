@@ -8,7 +8,7 @@ app.service('deviceTypeService',function ($http) {
 
     //根据id查询单个
     this.findOne=function (id) {
-        return $http.get("../deviceType/findOne/"+id);
+        return $http.get("../deviceType/"+id);
     }
     //增加
     this.add=function(entity){
@@ -22,11 +22,4 @@ app.service('deviceTypeService',function ($http) {
     this.dele=function(id){
         return $http.delete('../deviceType/'+id);
     }
-    //查找当前设备所绑定的用户
-    this.findBindUser=function (id) {
-        return $http.get('../deviceType/findUser/'+id);
-    }
-
-
-
 });

@@ -26,7 +26,8 @@ app.service('deviceService',function ($http) {
     this.findBindUser=function (id) {
         return $http.get('../device/findUser/'+id);
     }
-
-
-
+    //根据id查询单个分类
+    this.findOneType=function (id) {
+        return $http.get("../deviceType/"+id);
+    }
 });

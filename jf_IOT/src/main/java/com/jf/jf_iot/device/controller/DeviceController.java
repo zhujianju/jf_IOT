@@ -25,7 +25,6 @@ public class DeviceController {
     @PostMapping("page")
     public ResponseEntity<PageResult<Device>> querDeviceByPage(@RequestBody(required = false) Device device, int page, int rows){
         User user = (User) session.getAttribute("user");
-
         PageResult page1 = deviceService.findPage(page, rows, device, user);
         return ResponseEntity.ok(page1);
     }
@@ -41,7 +40,8 @@ public class DeviceController {
     public ResponseEntity<Void> saveDevice(@RequestBody Device device){
         //检验权限,不为管理员则抛异常
         SecurityUtil.isRoot(session);
-        deviceService.insert(device);
+        User user = (User) session.getAttribute("user");
+        deviceService.insert(device,user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
     /**
@@ -51,7 +51,8 @@ public class DeviceController {
     public ResponseEntity<Void> updateDevice(@RequestBody Device device){
         //检验权限,不为管理员则抛异常
         SecurityUtil.isRoot(session);
-        deviceService.updateByid(device);
+        User user = (User) session.getAttribute("user");
+        deviceService.updateByid(device,user);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
     /**

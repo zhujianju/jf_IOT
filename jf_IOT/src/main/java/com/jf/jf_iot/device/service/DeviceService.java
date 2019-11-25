@@ -11,4 +11,5 @@ public interface DeviceService extends BaseService<Device> {
     public PageResult findPage(int pageNum, int pageSize, Device device, User user);
 
     public List<User> findBindUser(Integer id);
+
 }

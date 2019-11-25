@@ -5,6 +5,7 @@ import tk.mybatis.mapper.annotation.KeySql;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 @Data
 @Table(name = "con_deviceType")
@@ -14,4 +15,7 @@ public class DeviceType {
     private Integer id;//id
     private String typekey;//设备分类key
     private String typename;//分类名称
+
+    private Date createtime;//创建时间
+    private Date updatetime;//修改时间
 }

@@ -5,8 +5,7 @@
     <!-- 页面meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>设备分类</title>
-    <!-- Tell the browser to be responsive to screen width -->
+    <title>分类管理</title>
     <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
     <link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../plugins/adminLTE/css/AdminLTE.css">
@@ -14,7 +13,6 @@
     <link rel="stylesheet" href="../css/style.css">
     <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
-
 
     <!--引入需要的js-->
     <script type="text/javascript" src="../plugins/angularjs/angular.min.js"></script>
@@ -25,176 +23,110 @@
     <!-- 引入自定义模块js -->
     <script type="text/javascript" src="../js/base_pagination.js"></script>
     <!-- 引入自定义service的js -->
-    <script type="text/javascript" src="../js/service/ConfDeviceService.js"></script>
+    <script type="text/javascript" src="../js/service/DeviceTypeService.js"></script>
     <!-- 引入自定义controller的js -->
     <script type="text/javascript" src="../js/controller/baseController.js"></script>
     <script type="text/javascript" src="../js/controller/ErrorController.js"></script>
-    <script type="text/javascript" src="../js/controller/ConfDeviceController.js"></script>
+    <script type="text/javascript" src="../js/controller/DeviceTypeController.js"></script>
 
     <!--引入select2-->
     <link rel="stylesheet" href="../plugins/select2/select2.css" />
     <link rel="stylesheet" href="../plugins/select2/select2-bootstrap.css" />
     <script src="../plugins/select2/select2.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="../js/plugins/angular-select2.js"> </script>
-    <style type="text/css">
-        #entitySaleactivate{
-            text-align: center;
-        }
-    </style>
 </head>
 
-<body class="hold-transition skin-red sidebar-mini"   ng-app="jfiot" ng-controller="deviceTypeController" ng-init="initSDDC()" >
+<body class="hold-transition skin-red sidebar-mini"  ng-app="jfiot" ng-controller="deviceTypeController" >
 <!-- .box-body -->
-<div class="box box-primary">
-    <div class="box-header with-border">
-        <h3 class="box-title">设备分类信息</h3>
-    </div>
-
-    <div class="box-body">
-
-        <!-- 数据表格 -->
-        <div class="table-box">
-            <!--工具栏-->
-            <div class="pull-left" >
-                <div class="form-group form-inline">
-                    <div class="btn-group disabled"  >
-                        <button type="button"  ng-show="authoCode==3" ng-click="deivceEntity={}" class="btn btn-default" title="新建" data-toggle="modal" data-target="#editModal"  ><i class="fa fa-file-o"></i> 新建</button>
-
-                        <button type="button"  class="btn btn-default" title="刷新" onclick="window.location.reload();"><i class="fa fa-refresh"></i> 刷新</button>
-                    </div>
-                </div>
-            </div>
-            <div class="input-group" style="width:1000px;" >
-
-                <div style="width: 135px;margin-left: 15px ">
-                    <select select2 ng-model="searchEntity.typeid" ng-change="reloadList()" class="form-control" placeholder="设备">
-                        <option value="{{ item.id }}" ng-repeat="item in deviceTypes">{{ item.text }}</option>
-                    </select>
-                </div>
-                <div style="width: 200px;margin-left: 160px "  class="input-group">
-                    <span class="input-group-addon">设备分类名称</span>
-                    <input type="text" class="form-control" ng-model="searchEntity.devicename" ng-change="reloadList()" aria-label="Amount (to the nearest dollar)">
-                </div>
-                <div style="margin-left: 370px;margin-top: -35px"  class="input-group"><button class="btn btn-default" ng-click="reloadList()" >查询</button></div>
-            </div>
-            <!--工具栏/-->
-            <div class="jumbotron" ng-if="errorEntityt.code==001 ">
-                <h1>{{errorEntityt.message}}</h1>
-                <p ng-bind-html="errorEntityt.text | trustHtml"></p>
-            </div>
-            <!--数据列表-->
-            <table id="dataList" class="table table-bordered table-striped table-hover dataTable" ng-if="list != null && errorEntityt.code==000">
-                <thead>
-                <tr>
-                    <th class="sorting">设备分类key</th>
-                    <th class="sorting">分类名称</th>
-                    <th class="text-center" width="20%">操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="entity in list">
-                    <td>{{entity.typekey}}</td>
-                    <td>{{entity.typename}}</td>
-                    <td class="text-center">
-
-                        <button type="button" class="btn bg-info btn-primary" data-toggle="modal" data-target="#userModal" ng-click="findBindUser(entity.id)" ng-if="authoCode==3 && entity.isBind" >设备绑定的用户</button>
-                        <button type="button" class="btn bg-olive btn-primary" data-toggle="modal" data-target="#editModal" ng-click="findOne(entity.id)" ng-if="authoCode==3" >修改</button>
-
-                        <button type="button" class="btn btn-danger btn-primary"  data-toggle="modal"  ng-show="authoCode==3" ng-click="delete(entity.id)" >删除</button>
-
-                    </td>
-                </tr>
-
-                </tbody>
-            </table>
-            <!--数据列表/-->
-            <!--分页控件-->
-            <tm-pagination conf="paginationConf"></tm-pagination>
-        </div>
-        <!-- 数据表格 /-->
-    </div>
-    <!-- /.box-body -->
-
-
-    <!-- 编辑窗口 -->
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" >
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h3 id="myModalLabel">{{deivceEntity.status == 1 ? '修改':'新增'}}设备</h3>
-                </div>
-                <div class="modal-body">
-
-                    <table class="table table-bordered table-striped"  width="800px">
-
-                        <tr>
-                            <td>设备分类</td>
-                            <td>
-                                <select select2 ng-model="deivceEntity.typeid" class="form-control" placeholder="选择分类">
-                                    <option value="{{ item.id }}" ng-repeat="item in deviceTypes">{{ item.text }}</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>设备参数</td>
-                            <td><input  class="form-control" placeholder="设备参数" ng-model="deivceEntity.paramid">  </td>
-                        </tr>
-                        <tr>
-                            <td>设备名称</td>
-                            <td><input  class="form-control" placeholder="设备名称" ng-model="deivceEntity.devicename">  </td>
-                        </tr>
-
-                    </table>
-
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-success" data-dismiss="modal" aria-hidden="true" ng-click="validStation()">保存</button>
-                    <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- 绑定的用户的详情 -->
-
+<div class="box-header with-border">
+    <h3 class="box-title">分类管理</h3>
 </div>
-<!--设备所绑定的用户详情-->
-<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
+<div class="box-body">
+    <!-- 数据表格 -->
+    <div class="table-box">
+
+        <!--工具栏-->
+        <div class="pull-left">
+            <div class="form-group form-inline">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default" ng-click="entity={}" title="新建" data-toggle="modal" data-target="#editModal" ><i class="fa fa-file-o"></i> 新建</button>
+                    <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i class="fa fa-refresh"></i> 刷新</button>
+                </div>
+            </div>
+        </div>
+        <div class="box-tools pull-left" style="margin-left: 20px;">
+            <div class="has-feedback">
+                分类名称：  <input type="text"  ng-model="searchEntity.typename" ng-change="reloadList()" >
+                <button class="btn btn-default" >查询</button>
+            </div>
+        </div>
+        <!--工具栏/-->
+        <div class="jumbotron" ng-if="errorEntityt.code==001 ">
+            <h1>{{errorEntityt.message}}</h1>
+            <p ng-bind-html="errorEntityt.text | trustHtml"></p>
+        </div>
+
+        <!--数据列表-->
+        <table id="dataList" class="table table-bordered table-striped table-hover dataTable" ng-if="list != null && errorEntityt.code==000">
+            <thead>
+            <tr>
+                <th class="sorting_asc">分类名称</th>
+                <th class="sorting">分类KEY</th>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="entity in list">
+                <td>{{entity.typename}}</td>
+                <td>{{entity.typekey}}</td>
+                <td class="text-center">
+                    <button type="button" class="btn bg-info btn-xs" data-toggle="modal" data-target="#editParam">设备分类参数管理</button>
+                    <button type="button" class="btn bg-olive btn-xs" ng-click="findOne(entity.id)" data-toggle="modal" data-target="#editModal">修改</button>
+                    <button type="button" class="btn btn-danger btn-xs"  data-toggle="modal" ng-click="delete(entity.id)" >删除</button>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+        <!--数据列表/-->
+        <!--分页控件-->
+        <tm-pagination conf="paginationConf"></tm-pagination>
+    </div>
+    <!-- 数据表格 /-->
+</div>
+<!-- /.box-body -->
+
+
+<!-- 分类编辑窗口 -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" >
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" >设备所绑定的用户详情</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel">{{entity.status == 1 ? '修改':'新增'}}分类</h3>
             </div>
             <div class="modal-body">
-                <table  class="table table-bordered table-striped table-hover dataTable" >
-                    <thead>
-                    <tr>
-                        <th class="sorting_asc">用户id</th>
-                        <th class="sorting">用户名称</th>
-                        <th class="sorting">用户账号</th>
-                        <th class="sorting">用户权限</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="entity in bindUserEntity">
-                        <td>{{entity.id}} </td>
-                        <td>{{entity.name}} </td>
-                        <td>{{entity.account}}</td>
-                        <td>{{entity.autho}}</td>
-                    </tr>
-
-                    </tbody>
+                <table class="table table-bordered table-striped"  width="800px">
+                <tr>
+                    <td>分类名称</td>
+                    <td><input  class="form-control" placeholder="分类名称" ng-model="entity.typename">  </td>
+                </tr>
+                <tr>
+                    <td>分类Key</td>
+                    <td><input  class="form-control" placeholder="分类Key" ng-model="entity.typekey" ng-show="entity.status != 1" >
+                        <input  class="form-control" placeholder="分类Key" ng-model="entity.typekey" ng-show="entity.status == 1" readonly >
+                    </td>
+                </tr>
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button class="btn btn-success"  aria-hidden="true" ng-click="validStation()" >保存</button>
+                <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
             </div>
         </div>
     </div>
 </div>
 
 </body>
+
 </html>

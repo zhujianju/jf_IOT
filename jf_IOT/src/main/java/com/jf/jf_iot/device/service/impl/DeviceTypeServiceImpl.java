@@ -18,6 +18,7 @@ import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 @Service
 public class DeviceTypeServiceImpl implements DeviceTypeService {
@@ -50,12 +51,11 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
             }
             deviceTypes=new ArrayList<>();
             for (Device device : devices) {
-                DeviceType deviceType = selectOneByKey(device.getTypeid());
+                DeviceType deviceType = findOne(device.getTypeid());
                 deviceTypes.add(deviceType);
             }
-
         }
-        return deviceTypes;
+            return deviceTypes;
     }
 
     @Override
@@ -96,23 +96,57 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
     }
     @Override
     public DeviceType findOne(Integer id) {
-        return null;
+        DeviceType deviceType=new DeviceType();
+        deviceType.setId(id);
+        return deviceTypeMapper.selectOne(deviceType);
     }
 
     @Override
     public int deleteById(Integer id) {
+        //用于删除前，判断是否已经绑定好了设备
+        DeviceType dety = findOne(id);
+        if(theTypeIsHaveDevice(dety.getId())){
+            throw new IOTException(ExceptionEnum.DEVICETYOE_KEY_ISBIND);
+        }
         Example example = new Example(DeviceType.class);
         example.createCriteria().andEqualTo("id",id);
         return  deviceTypeMapper.deleteByExample(example);
     }
 
     @Override
-    public int updateByid(DeviceType deviceType) {
+    public int updateByid(DeviceType deviceType,User user) {
+   /*     if(selectOneByKey(deviceType.getTypekey()) !=null ){
+            throw new IOTException(ExceptionEnum.DEVICETYOE_KEY_UNION);
+        }*/
+        deviceType.setUpdatetime(new Date());
         return deviceTypeMapper.updateByPrimaryKey(deviceType);
     }
 
     @Override
-    public int insert(DeviceType deviceType) {
+    public int insert(DeviceType deviceType,User user) {
+        /**
+         * 新增前，判断用户是否重复输入key
+         */
+        if(selectOneByKey(deviceType.getTypekey()) !=null ){
+            throw new IOTException(ExceptionEnum.DEVICETYOE_KEY_UNION);
+        }
+        deviceType.setCreatetime(new Date());
         return deviceTypeMapper.insert(deviceType);
     }
+
+    /**
+     * 查看当前设备类型是否绑定上了设备（暂时用于删除和修改前进行查询操作）
+     * @return
+     */
+    private boolean theTypeIsHaveDevice(Integer deviceType){
+        Device de=new Device();
+        de.setTypeid(deviceType);
+        List<Device> device = deviceMapper.select(de);
+        if(!CollectionUtils.isEmpty(device)){
+            return true;
+        }
+        return false;
+    }
+
+
 }

@@ -17,7 +17,10 @@ import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+
 @Service
 public class DeviceServiceImpl implements DeviceService {
     @Autowired
@@ -51,7 +54,7 @@ public class DeviceServiceImpl implements DeviceService {
         if (user.getAutho() == null || user.getAutho()==0){
                 throw new IOTException(ExceptionEnum.USER_NOT_AUTHO);
         }
-
+        example.setOrderByClause("createtime DESC");
         //2.当前为管理员。可查询所有的设备
         if(user.getAutho() == 3){
             //设置查询条件
@@ -63,14 +66,17 @@ public class DeviceServiceImpl implements DeviceService {
         //3.当前登陆为用户/经销商。
         if(user.getAutho() == 1 || user.getAutho() == 2){
             if(device == null){//防止报空指针异常
-                device=new Device(); }
-
-             devices = deviceMapper.queryDeviceByUserId(user.getId(), device.getTypeid(), device.getDevicename());
+                device=new Device();
+            }
+             devices = deviceMapper.queryDeviceByUserId(user.getId(), device.getTypeid(), device.getName());
+            //清除devices中的不可以展示数据项
+            clearDeviceKey(devices);
         }
         //没有查询到设备
         if(CollectionUtils.isEmpty(devices)){
             throw new IOTException(ExceptionEnum.DEVICE_NOT_FOND);
         }
+
 
         //解析分页对象
         PageInfo<Device> info=new PageInfo<>(devices);
@@ -84,10 +90,10 @@ public class DeviceServiceImpl implements DeviceService {
     private void setDeviceExample(Device device, Example.Criteria criteria){
         //判断查询条件是否为空
         if(device !=null){
-            if(StringUtils.isNotBlank(device.getDevicename())){
-                criteria.andLike("devicename","%"+device.getDevicename()+"%");
+            if(StringUtils.isNotBlank(device.getName())){
+                criteria.andLike("name","%"+device.getName()+"%");
             }
-            if(StringUtils.isNotBlank(device.getTypeid())){
+            if(device.getTypeid() != null){
                 criteria.andEqualTo("typeid",device.getTypeid());
             }
         }
@@ -108,16 +114,28 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public int updateByid(Device device) {
-
+    public int updateByid(Device device,User user) {
+        if(user != null){
+            device.setLastUpdateId(user.getId());
+        }
+        device.setUpdatetime(new Date());
         return deviceMapper.updateByPrimaryKey(device);
     }
 
     @Override
-    public int insert(Device device) {
-        device.setSaleactivate(0);
+    public int insert(Device device,User user) {
+        UUID uuid=UUID.randomUUID();
+        device.setSaleactivate(0);//设置状态未激活
+        device.setProductkey(UUID.randomUUID().toString());
+        device.setDevicename(UUID.randomUUID().toString());
+        device.setDevicesecret(UUID.randomUUID().toString());
+        if(user != null){
+            device.setCreatorID(user.getId());
+        }
+        device.setCreatetime(new Date());
         return deviceMapper.insert(device);
     }
+
 
     @Override
     public List<User> findBindUser(Integer id) {
@@ -138,6 +156,19 @@ public class DeviceServiceImpl implements DeviceService {
             }else {
                 device.setIsBind(false);
             }
+        }
+        return devices;
+    }
+
+    /**
+     * 清空设备中的不可展示的key项。用于清空非管理员的查询项
+     * @return
+     */
+    private List<Device> clearDeviceKey(List<Device> devices){
+        for (Device device : devices) {
+            device.setProductkey(null);
+            device.setDevicename(null);
+            device.setDevicesecret(null);
         }
         return devices;
     }

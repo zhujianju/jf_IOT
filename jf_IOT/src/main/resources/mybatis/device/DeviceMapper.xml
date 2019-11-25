@@ -16,8 +16,8 @@
              <if test="typid != null and typid!=''">
                 AND cd.typeId = #{typid}
              </if>
-             <if test="deviceName != null and deviceName!=''">
-                AND cd.deviceName LIKE "%"#{deviceName}"%"
+             <if test="name != null and name!=''">
+                AND cd.name LIKE "%"#{name}"%"
              </if>
          </where>
 
