@@ -106,10 +106,17 @@ app.controller('deviceController',function ($scope,$controller,deviceService) {
     /**
      * 查找key
      */
+    $scope.keyEntity={};
     $scope.findKey=function (entity) {
-        deviceService.findOneType(entity.typeid).success(function () {
-
-        }).error();
+        deviceService.findOneType(entity.typeid).success(function (response) {
+            $scope.keyEntity.devicename=entity.devicename
+            $scope.keyEntity.devicesecret=entity.devicesecret
+            $scope.keyEntity.productkey=entity.productkey
+            $scope.keyEntity.typekey=response.typekey
+            console.log( $scope.keyEntity);
+        }).error(function (error) {
+            $scope.getError(error);
+        });
     }
 
 });

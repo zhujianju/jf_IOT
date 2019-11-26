@@ -65,8 +65,8 @@
                                 </div>
                             </div>
                                 <div class="input-group" style="width:1000px;" >
-                               
-                                <div style="width: 135px;margin-left: 15px ">
+
+                            <div style="width: 135px;margin-left: 15px ">
                                 <select select2 ng-model="searchEntity.typeid" ng-change="reloadList()" class="form-control" placeholder="设备分类">
                                     <option value="{{ item.id }}" ng-repeat="item in deviceTypes">{{ item.text }}</option>
                                 </select>
@@ -227,7 +227,7 @@
                              设备绑定名
                           </td>
                           <td>
-                              <input readonly class="form-control" placeholder="">
+                              <input readonly class="form-control" placeholder="" ng-model="keyEntity.devicename">
                           </td>
                       </tr>
                       <tr>
@@ -236,7 +236,7 @@
                              设备绑定密钥
                           </td>
                           <td>
-                              <input readonly class="form-control" placeholder="">
+                              <input readonly class="form-control" placeholder="" ng-model="keyEntity.devicesecret">
                           </td>
                       </tr>
                       <tr>
@@ -244,7 +244,7 @@
                              出库KEY
                           </td>
                           <td>
-                              <input readonly class="form-control" placeholder="">
+                              <input readonly class="form-control" placeholder="" ng-model="keyEntity.productkey">
                           </td>
                       </tr>
                       <tr>
@@ -252,7 +252,7 @@
                               分类KEY
                           </td>
                           <td>
-                              <input readonly class="form-control" placeholder="">
+                              <input readonly class="form-control" placeholder="" ng-model="keyEntity.typekey">
                           </td>
                       </tr>
                       </tbody>

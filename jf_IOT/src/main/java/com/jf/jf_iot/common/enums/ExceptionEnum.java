@@ -20,10 +20,13 @@ public enum  ExceptionEnum {
 
     //设备类型异常
     DEVICETYOE_NOT_FOND(5004,"没有查询到设备类型"),
-    DEVICETYOE_KEY_UNION(5005,"设备分类KEY必须唯一"),
     DEVICETYOE_KEY_ISBIND(5006,"当前设备分类已经被设备绑定"),
     DEVICETYOE_CREATE_ERROR(5000,"系统问题，分类保存失败。"),
-    DEVICETYOE_DELETE_ERROR(5001,"系统问题，分类删除失败。")
+    DEVICETYOE_DELETE_ERROR(5001,"系统问题，分类删除失败。"),
+
+    //设备参数异常
+    DEVICEPARAM_NOT_FOND(6004,"暂时没有添加分类参数")
+
     ;
     private int code;//异常状态吗
     private String message;//异常信息

@@ -3,6 +3,7 @@ package com.jf.jf_iot.device.entity;
 import lombok.Data;
 import tk.mybatis.mapper.annotation.KeySql;
 
+import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
@@ -18,4 +19,9 @@ public class DeviceType {
 
     private Date createtime;//创建时间
     private Date updatetime;//修改时间
+    @Column(name = "creatorID")
+    private Integer creatorID;//创建人id
+    @Column(name="lastUpdateId")
+    private Integer lastUpdateId;//最后一次修改人id
+
 }

@@ -36,7 +36,8 @@ spring:
 
 mybatis:
   mapper-locations: classpath:mybatis/*/*.xml      #  所有的mapper映射文件
-
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 wx:
   appid: wx756f10679ececa93
   secret: a51784bae0bd89fb3ca980772e168dd0
