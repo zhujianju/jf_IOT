@@ -20,6 +20,8 @@ import tk.mybatis.mapper.entity.Example;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+
 @Service
 public class DeviceTypeServiceImpl implements DeviceTypeService {
     @Autowired
@@ -58,6 +60,11 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
             return deviceTypes;
     }
 
+    /**
+     * 根据key查找分类
+     * @param key
+     * @return
+     */
     @Override
     public DeviceType selectOneByKey(String key) {
         DeviceType deviceType=new DeviceType();
@@ -119,18 +126,15 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
             throw new IOTException(ExceptionEnum.DEVICETYOE_KEY_UNION);
         }*/
         deviceType.setUpdatetime(new Date());
+        deviceType.setLastUpdateId(user.getId());
         return deviceTypeMapper.updateByPrimaryKey(deviceType);
     }
 
     @Override
     public int insert(DeviceType deviceType,User user) {
-        /**
-         * 新增前，判断用户是否重复输入key
-         */
-        if(selectOneByKey(deviceType.getTypekey()) !=null ){
-            throw new IOTException(ExceptionEnum.DEVICETYOE_KEY_UNION);
-        }
+        deviceType.setTypekey(UUID.randomUUID().toString());
         deviceType.setCreatetime(new Date());
+        deviceType.setCreatorID(user.getId());
         return deviceTypeMapper.insert(deviceType);
     }
 

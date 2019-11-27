@@ -99,6 +99,26 @@ app.controller('baseController',function($scope,$http,$cookieStore){
         }
     }
 
-
-
+    /**
+     * 传入集合和id，查找对应的文本
+     * @param list
+     * @param id
+     */
+    $scope.findText=function (list,id) {
+        for (var i=0;i<list.length;i++){
+            if(list[i].id==id){
+                return list[i].text;
+            }
+        }
+    }
+    //定义参数类型下拉框
+    $scope.typeList=[{id:1,text:'动值参数'},{id:2,text:'定值参数'}];
+    //参数值类型
+    $scope.valueTypeList=[{id:1,text:'Int'},{id:2,text:'String'}];
+    //参数状态
+    $scope.statusList=[{id:0,text:'禁用'},{id:1,text:'启用'}];
+    //设备状态
+    $scope.lifecycleWarnList=[{id:0,text:'已入库'},{id:1,text:'已出售'},{id:2,text:'已激活'},{id:3,text:'已停用'},{id:4,text:'已失效'}];
+    //设备是否开启
+    $scope.isenableList=[{id:0,text:'已关闭'},{id:1,text:'已开启'}];
 });

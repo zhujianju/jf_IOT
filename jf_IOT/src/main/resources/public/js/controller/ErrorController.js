@@ -15,13 +15,17 @@ app.controller('errorController',function ($scope,$controller) {
         if(error.status==4005 && error.message=='需要管理员才能进行此操作'){
             alert(error.message);
         }if(error.status==5005){
-            alert("分类Key已经存在");
+
         }if(error.status==5006){
             alert(error.message);
         }if(error.status==5004){
             $scope.errorEntityt=error;
             $scope.errorEntityt.text="当前查询条件下，没有找到任何设备分类信息."
             $scope.errorEntityt.code=001; //根据不同的code来处理不同的错误信息
+        }if(error.status==6004){
+            $scope.errorEntityt=error;
+            $scope.errorEntityt.text="没有找到任何参数。请先添加参数."
+            $scope.errorEntityt.code=006; //根据不同的code来处理不同的错误信息
         }
         if(error.status==500){
            alert("系统内部错误");

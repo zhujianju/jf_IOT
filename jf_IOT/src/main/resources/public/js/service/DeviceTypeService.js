@@ -22,4 +22,9 @@ app.service('deviceTypeService',function ($http) {
     this.dele=function(id){
         return $http.delete('../deviceType/'+id);
     }
+
+    //根据分类id查询分类下的所有参数
+    this.findDeviceParamsByid=function(id){
+        return $http.get('../deviceParam/params/'+id);
+    }
 });

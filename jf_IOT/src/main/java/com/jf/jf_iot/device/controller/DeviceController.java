@@ -76,4 +76,13 @@ public class DeviceController {
 
         return  ResponseEntity.ok(deviceService.findBindUser(id));
     }
+
+    /**
+     * 操作设备的开启/关闭
+     */
+    @GetMapping("isEnable/{id}")
+    public ResponseEntity<Void> isEnable(@PathVariable("id") Integer id){
+        System.out.println("进入操作后台");
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }

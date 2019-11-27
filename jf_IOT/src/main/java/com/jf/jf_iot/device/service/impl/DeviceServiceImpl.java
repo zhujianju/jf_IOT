@@ -129,6 +129,8 @@ public class DeviceServiceImpl implements DeviceService {
         device.setProductkey(UUID.randomUUID().toString());
         device.setDevicename(UUID.randomUUID().toString());
         device.setDevicesecret(UUID.randomUUID().toString());
+        device.setIsenable(0);//设置默认未开启
+        device.setLifecyclewarn(0);//设置为已入库状态
         if(user != null){
             device.setCreatorID(user.getId());
         }
