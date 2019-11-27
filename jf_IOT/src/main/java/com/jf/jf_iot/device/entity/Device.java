@@ -23,7 +23,10 @@ public class Device {
     private Integer saleactivate;//销售激活状态0.未激活 1.已激活
     private String subscriber;//订阅地址
     private String issue;//发布地址
-    private Integer lifecyclewarn;//已入库，已出售，已激活，已已停用，失效等状态
+    private Integer lifecyclewarn;//0已入库，1已出售，2已激活，3已已停用，4失效等状态
+
+    private Integer isenable;//是否开启。0.关闭  1.开启
+
     private Date createtime;//创建时间
     private Date updatetime;//修改时间
     @Column(name = "creatorID")

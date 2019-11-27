@@ -102,7 +102,14 @@ app.controller('deviceController',function ($scope,$controller,deviceService) {
         }*/
         save();
     }
-
+    //操作设备的开启和关闭
+    $scope.isEnable=function(id){
+        deviceService.isEnable(id).success(function (res) {
+            $scope.reloadList();//刷新列表
+        }).error(function (error) {
+            $scope.getError(error);
+        })
+    }
     /**
      * 查找key
      */

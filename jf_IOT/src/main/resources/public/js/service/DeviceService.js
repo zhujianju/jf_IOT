@@ -30,4 +30,8 @@ app.service('deviceService',function ($http) {
     this.findOneType=function (id) {
         return $http.get("../deviceType/"+id);
     }
+    //开启和关闭设备
+    this.isEnable=function (id) {
+        return $http.get("../device/isEnable/"+id);
+    }
 });

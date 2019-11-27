@@ -117,5 +117,8 @@ app.controller('baseController',function($scope,$http,$cookieStore){
     $scope.valueTypeList=[{id:1,text:'Int'},{id:2,text:'String'}];
     //参数状态
     $scope.statusList=[{id:0,text:'禁用'},{id:1,text:'启用'}];
-
+    //设备状态
+    $scope.lifecycleWarnList=[{id:0,text:'已入库'},{id:1,text:'已出售'},{id:2,text:'已激活'},{id:3,text:'已停用'},{id:4,text:'已失效'}];
+    //设备是否开启
+    $scope.isenableList=[{id:0,text:'已关闭'},{id:1,text:'已开启'}];
 });
