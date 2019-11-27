@@ -25,7 +25,7 @@ app.controller('errorController',function ($scope,$controller) {
         }if(error.status==6004){
             $scope.errorEntityt=error;
             $scope.errorEntityt.text="没有找到任何参数。请先添加参数."
-            $scope.errorEntityt.code=001; //根据不同的code来处理不同的错误信息
+            $scope.errorEntityt.code=006; //根据不同的code来处理不同的错误信息
         }
         if(error.status==500){
            alert("系统内部错误");

@@ -25,8 +25,7 @@ public enum  ExceptionEnum {
     DEVICETYOE_DELETE_ERROR(5001,"系统问题，分类删除失败。"),
 
     //设备参数异常
-    DEVICEPARAM_NOT_FOND(6004,"暂时没有添加分类参数")
-
+    DEVICEPARAM_NOT_FOND(6004,"暂时没有添加分类参数"),
     ;
     private int code;//异常状态吗
     private String message;//异常信息

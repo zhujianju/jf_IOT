@@ -70,6 +70,18 @@ app.controller('deviceTypeController',function ($scope,$controller,deviceTypeSer
         }
     }
 
+    //根据分类id查询分类下的所有参数
+    $scope.findDeviceParamsByid=function(id){
+        deviceTypeService.findDeviceParamsByid(id).success(
+            function(response){
+                $scope.paramList=response;
+                $scope.errorEntityt.code=000;
+            }
+        ).error(function (error) {
+            $scope.getError(error);
+        });
+    }
+
 
 
     /**

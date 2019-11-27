@@ -22,6 +22,7 @@ public class DeviceParam {
     private Integer valueType;//参数值的类型(1int,2string)
     private Integer min;//最小值
     private Integer max;//最大值
+    private String unit;//最小值
     private Integer state;//状态：0禁用，1启用
     private String warnValue;//报警值
 

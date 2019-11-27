@@ -98,4 +98,14 @@ public class DeviceParamController {
         SecurityUtil.isRoot(session);//判断是否为管理员
         return ResponseEntity.ok(deviceParamService.findOne(id));
     }
+
+    /**
+     * 根据分类id查询分类下的所有参数
+     * @return
+     */
+    @GetMapping("/params/{id}")
+    public ResponseEntity<List<DeviceParam>> findDeviceParamsByid(@PathVariable("id") Integer id){
+        SecurityUtil.isRoot(session);//判断是否为管理员
+        return ResponseEntity.ok(deviceParamService.findDeviceParamsByid(id));
+    }
 }

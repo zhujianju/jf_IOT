@@ -36,6 +36,8 @@ app.controller('deviceParamController',function ($scope,$controller,deviceParamS
         );
     }
 
+
+
     //保存
     save=function(){
         var serviceObject;//服务层对象
@@ -69,6 +71,8 @@ app.controller('deviceParamController',function ($scope,$controller,deviceParamS
             });
         }
     }
+
+
 
 
 

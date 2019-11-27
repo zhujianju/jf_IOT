@@ -20,7 +20,15 @@
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
   
     <script src="../plugins/adminLTE/js/app.min.js"></script>
-    
+
+    <!--引入需要的js-->
+    <script type="text/javascript" src="../plugins/angularjs/angular.min.js"></script>
+    <!-- 引入自定义模块js -->
+    <script type="text/javascript" src="../js/base.js"></script>
+    <!-- 引入自定义controller的js -->
+    <script type="text/javascript" src="../js/controller/baseController.js"></script>
+    <script type="text/javascript" src="../js/controller/ErrorController.js"></script>
+    <script type="text/javascript" src="../js/controller/UserController.js"></script>
     <script type="text/javascript">   
 		 function SetIFrameHeight(){
 		  	  var iframeid=document.getElementById("iframe"); //iframe id
@@ -33,7 +41,7 @@
  
 </head>
 
-<body class="hold-transition skin-green sidebar-mini" >
+<body class="hold-transition skin-green sidebar-mini" ng-app="jfiot" ng-controller="userController"  ng-init="getCookie()" >
 
     <div class="wrapper">
 
@@ -327,12 +335,12 @@
 				                </a>
 				            </li>
 
-				            <li id="device-login">
-				                <a href="DeviceTypeView.html" target="iframe">
+				            <li id="device-login" ng-if="authoCode==3" >
+				                <a href="DeviceTypeView.html" target="iframe" >
 				                    <i class="fa fa-circle-o"></i>设备分类管理
 				                </a>
 				            </li>
-                            <li id="device-param">
+                            <li id="device-param" ng-if="authoCode==3">
                                 <a href="DeviceParam.html" target="iframe">
                                     <i class="fa fa-circle-o"></i>设备参数管理
                                 </a>

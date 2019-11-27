@@ -7,6 +7,7 @@ import com.jf.jf_iot.common.enums.ExceptionEnum;
 import com.jf.jf_iot.common.exception.IOTException;
 import com.jf.jf_iot.common.utill.SecurityUtil;
 import com.jf.jf_iot.common.utill.SelectUtil;
+import com.jf.jf_iot.device.entity.DeviceParam;
 import com.jf.jf_iot.device.entity.DeviceType;
 import com.jf.jf_iot.device.service.DeviceTypeService;
 import com.jf.jf_iot.user.entity.User;
@@ -115,4 +116,5 @@ public class DeviceTypeController {
         SecurityUtil.isRoot(session);//判断是否为管理员
         return ResponseEntity.ok(deviceTypeService.findOne(id));
     }
+
 }

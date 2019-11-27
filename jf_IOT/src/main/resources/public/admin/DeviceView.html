@@ -98,9 +98,9 @@
 				                          <td>{{entity.name}}</td>
 									      <td>{{findDeviceTypeText(entity.typeid)}}</td>
 		                                 <td ng-show="authoCode==3" width="10%">
-                                             <button type="button" class="btn bg-olive btn-info" data-toggle="modal" data-target="#KeyModal" ng-click="findKey(entity)" ng-if="authoCode==3" >查看密钥和Key</button>
+                                             <button type="button" class="btn bg-olive btn-info " data-toggle="modal" data-target="#KeyModal" ng-click="findKey(entity)" ng-if="authoCode==3" >查看密钥和Key</button>
                                          </td>
-		                                 <td><div id="entitySaleactivate" class="alert {{entity.saleactivate==1 ? 'alert-success':'alert-danger'}}" role="alert">{{isSaleactivate(entity.saleactivate)}}</div></td>
+		                                 <td><div id="entitySaleactivate" class="alert {{entity.saleactivate==1 ? 'alert-success':'alert-danger'}} " role="alert">{{isSaleactivate(entity.saleactivate)}}</div></td>
 		                                  <td class="text-center">
 
                                             <button type="button" class="btn bg-info btn-primary" data-toggle="modal" data-target="#userModal" ng-click="findBindUser(entity.id)" ng-if="authoCode==3 && entity.isBind" >设备绑定的用户</button>

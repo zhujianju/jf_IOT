@@ -67,7 +67,7 @@
         </div>
 
         <!--数据列表-->
-        <table id="dataList" class="table table-bordered table-striped table-hover dataTable" ng-if="list != null && errorEntityt.code==000">
+        <table id="dataList" class="table table-bordered table-striped table-hover dataTable" ng-if="list != null && errorEntityt.code!=001">
             <thead>
             <tr>
                 <th class="sorting_asc">分类名称</th>
@@ -80,7 +80,7 @@
                 <td>{{entity.typename}}</td>
                 <td>{{entity.typekey}}</td>
                 <td class="text-center">
-                    <button type="button" class="btn bg-info btn-xs" data-toggle="modal" data-target="#editParam">设备分类参数管理</button>
+                    <button type="button" class="btn bg-info btn-xs" data-toggle="modal" data-target="#ParamModal" ng-click="findDeviceParamsByid(entity.id)">设备分类参数管理</button>
                     <button type="button" class="btn bg-olive btn-xs" ng-click="findOne(entity.id)" data-toggle="modal" data-target="#editModal">修改</button>
                     <button type="button" class="btn btn-danger btn-xs"  data-toggle="modal" ng-click="delete(entity.id)" >删除</button>
                 </td>
@@ -120,6 +120,71 @@
         </div>
     </div>
 </div>
+
+<!-- 参数展示窗口 -->
+<div class="modal fade" id="ParamModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog"  style="margin-top: -150px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel">  </h3>
+            </div>
+            <div class="modal-body">
+                <!--异常提示-->
+                <div class="jumbotron" ng-if="errorEntityt.code==006 ">
+                    <h1>{{errorEntityt.message}}</h1>
+                    <p ng-bind-html="errorEntityt.text | trustHtml"></p>
+                </div>
+                <!--正常显示-->
+                <table class="table table-bordered table-striped table-hover dataTable text-center" ng-show="paramList != null && errorEntityt.code!=006">
+                    <thead>
+                    <th class="sorting ">参数名称</th>
+                    <th class="sorting">类型</th>
+                    <th class="sorting">值类型</th>
+                    <th class="sorting">最大值</th>
+                    <th class="sorting">最小值</th>
+                    <th class="sorting">单位</th>
+                    <th class="sorting">报警值</th>
+                    <th class="sorting">状态</th>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="entity in paramList" >
+                        <td>
+                            {{entity.name}}
+                        </td>
+                        <td>
+                            {{findText(typeList,entity.type)}}
+                        </td>
+                        <td>
+                            {{findText(valueTypeList,entity.valueType)}}
+                        </td>
+                        <td>
+                            {{entity.max}}
+                        </td>
+                        <td>
+                            {{entity.min}}
+                        </td>
+                        <td>
+                            {{entity.unit}}
+                        </td>
+                        <td>
+                            {{entity.warnValue}}
+                        </td>
+                        <td>
+                            {{findText(statusList,entity.state)}}
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 </body>
 

@@ -39,7 +39,7 @@
 <body class="hold-transition skin-red sidebar-mini"   ng-app="jfiot" ng-controller="deviceParamController" ng-init="initSDDC()"  >
   <!-- .box-body -->                
                     <div class="box-header with-border">
-                        <h3 class="box-title">规格管理</h3>
+                        <h3 class="box-title">分类参数</h3>
                     </div>
                     <div class="box-body">
                         <!-- 数据表格 -->
@@ -49,7 +49,7 @@
                             <div class="pull-left">
                                 <div class="form-group form-inline">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-default" title="新建" data-toggle="modal" data-target="#editModal" ><i class="fa fa-file-o"></i> 新建</button>
+                                        <button type="button" class="btn btn-default" title="新建" data-toggle="modal" ng-click="entity={}" data-target="#editModal" ><i class="fa fa-file-o"></i> 新建</button>
                                         <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i class="fa fa-refresh"></i> 刷新</button>
                                     </div>
                                 </div>
@@ -78,8 +78,10 @@
 					                      <th class="text-center">值类型</th>
 					                      <th class="text-center">最大值</th>
 					                      <th class="text-center">最小值</th>
+                                          <th class="text-center">单位</th>
 					                      <th class="text-center">报警值</th>
 					                      <th class="text-center">状态</th>
+                                          <th class="text-center">操作</th>
 			                          </tr>
 			                      </thead>
 			                      <tbody>
@@ -87,15 +89,16 @@
 				                          <td>{{findDeviceTypeText(entity.classificationId)}}</td>
 									      <td>{{entity.name}}</td>
 									      <td>{{entity.englishName}}</td>
-									      <td>{{entity.type}}</td>
-									      <td>{{entity.valueType}}</td>
+									      <td>{{findText(typeList,entity.type)}}</td>
+									      <td>{{findText(valueTypeList,entity.valueType)}}</td>
 									      <td>{{entity.max}}</td>
 									      <td>{{entity.min}}</td>
+                                          <td>{{entity.unit}}</td>
 									      <td>{{entity.warnValue}}</td>
-									      <td>{{entity.state}}</td>
+									      <td>{{findText(statusList,entity.state)}}</td>
 		                                  <td class="text-center">                                           
-		                                 	  <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal">修改</button>        
-		                                      <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" >删除</button>           
+		                                 	  <button type="button" class="btn bg-olive btn-xs" ng-click="findOne(entity.id)" data-toggle="modal" data-target="#editModal">修改</button>
+		                                      <button type="button" class="btn btn-danger btn-xs" data-toggle="modal"  ng-click="delete(entity.id)">删除</button>
 		                                  </td>
 			                          </tr>
 			                      </tbody>
@@ -115,13 +118,17 @@
 	<div class="modal-content">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			<h3 id="myModalLabel">分类编辑</h3>
+			<h3 id="myModalLabel">分类参数编辑</h3>
 		</div>
 		<div class="modal-body">							
 			<table class="table table-bordered table-striped"  width="800px">
 	      		<tr>
 		      		<td >分类</td>
-		      		<td><input  class="form-control" placeholder="选择分类" >  </td>
+		      		<td>
+                        <select select2 ng-model="entity.classificationId" ng-change="reloadList()" class="form-control" placeholder="选择设备分类">
+                            <option value="{{ item.id }}" ng-repeat="item in deviceTypes">{{ item.text }}</option>
+                        </select>
+                    </td>
 		      	</tr>
 			 </table>				
 			 <table class="table table-bordered table-striped table-hover dataTable">
@@ -131,22 +138,19 @@
                     </thead>
                     <tbody>
                       <tr>
-                           
 				            <td>
 				            	名称
 				            </td>
 				            <td>
-				            	<input  class="form-control" placeholder="名称"> 
+				            	<input  class="form-control" placeholder="名称" ng-model="entity.name">
 				            </td>
-							
                       </tr>
 					  <tr>
-                         
 				            <td>
 				            	英文名称
 				            </td>
 				            <td>
-				            	<input  class="form-control" placeholder="英文名称"> 
+				            	<input  class="form-control" placeholder="英文名称"  ng-model="entity.englishName">
 				            </td>
                       </tr>
 					  <tr>
@@ -154,15 +158,27 @@
 				            	类型
 				            </td>
 				            <td>
-				            	<input  class="form-control" placeholder="下拉框"> 
+                                <select select2 ng-model="entity.type" ng-change="reloadList()" class="form-control" placeholder="选择参数类型">
+                                    <option value="{{ item.id }}" ng-repeat="item in typeList">{{ item.text }}</option>
+                                </select>
 				            </td>
+                      </tr>
+                      <tr>
+                          <td>
+                              值类型
+                          </td>
+                          <td>
+                              <select select2 ng-model="entity.valueType" ng-change="reloadList()" class="form-control" placeholder="选择参数值类型">
+                                  <option value="{{ item.id }}" ng-repeat="item in valueTypeList">{{ item.text }}</option>
+                              </select>
+                          </td>
                       </tr>
                       <tr>
 				            <td>
 				            	最大值
 				            </td>
 				            <td>
-				            	<input  class="form-control" placeholder="最大值"> 
+				            	<input  class="form-control" placeholder="最大值"  ng-model="entity.max">
 				            </td>
                       </tr>
                       <tr>
@@ -170,15 +186,23 @@
 				            	最小值
 				            </td>
 				            <td>
-				            	<input  class="form-control" placeholder="最小值"> 
+				            	<input  class="form-control" placeholder="最小值"  ng-model="entity.min">
 				            </td>
+                      </tr>
+                      <tr>
+                          <td>
+                              单位
+                          </td>
+                          <td>
+                              <input  class="form-control" placeholder="单位"  ng-model="entity.unit  ">
+                          </td>
                       </tr>
                       <tr>
 				       		 <td>
 				            	报警值
 				            </td>
 				            <td>
-				            	<input  class="form-control" placeholder="报警值"> 
+				            	<input  class="form-control" placeholder="报警值"  ng-model="entity.warnValue">
 				            </td>
                       </tr>
                       <tr>
@@ -186,16 +210,16 @@
 				            	状态
 				            </td>
 				            <td>
-				            	<input  class="form-control" placeholder="状态"> 
+                                <select select2 ng-model="entity.state" ng-change="reloadList()" class="form-control" placeholder="状态">
+                                    <option value="{{ item.id }}" ng-repeat="item in statusList">{{ item.text }}</option>
+                                </select>
 				            </td>
                       </tr>
                     </tbody>
 			  </table> 
-			
-			
 		</div>
 		<div class="modal-footer">						
-			<button class="btn btn-success" data-dismiss="modal" aria-hidden="true">保存</button>
+			<button class="btn btn-success" aria-hidden="true" ng-click="validStation()">保存</button>
 			<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
 		</div>
 	  </div>
