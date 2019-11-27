@@ -18,10 +18,5 @@ public class RoleController {
     public String Hello(){
         return "/login/index";
     }
-    @RequestMapping("/thymeleaf")
-    public String testThymeleaf(Model model){
-        //把数据存入model
-        model.addAttribute("name","nb");
-        return "test";
-    }
+
 }
