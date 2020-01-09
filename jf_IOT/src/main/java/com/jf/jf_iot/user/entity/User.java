@@ -1,6 +1,7 @@
 package com.jf.jf_iot.user.entity;
 
 import lombok.Data;
+import org.apache.ibatis.annotations.One;
 import tk.mybatis.mapper.annotation.KeySql;
 
 import javax.persistence.Column;
@@ -16,6 +17,7 @@ public class User {
     private Integer id;
     @Column(name="name")
     private String name;//用户名称
+    private String account;//用户名
     private String password;//密码
     private String cid;//身份证
     private String emil;//邮箱

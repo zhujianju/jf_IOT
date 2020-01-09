@@ -12,7 +12,7 @@ import java.util.List;
 public interface DeviceMapper extends Mapper<Device> {
     /**
      * 查询当前登陆用户下所有的设备。
-            */
+                */
     List<Device> queryDeviceByUserId(Integer userId, @Param("typid")Integer typeid,@Param("name")String name);
 
     /**
@@ -22,7 +22,7 @@ public interface DeviceMapper extends Mapper<Device> {
      * @return
      */
     @Select("select sys_user.* from sys_user where id in (select userId from con_device_user where deviceId = #{id})")
-    List<User> findBindUser(Integer id);
+    List<User> findBindUser(String id);
 
 
 

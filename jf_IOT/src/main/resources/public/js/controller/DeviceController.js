@@ -110,6 +110,16 @@ app.controller('deviceController',function ($scope,$controller,deviceService) {
             $scope.getError(error);
         })
     }
+    //激活设备
+    $scope.Saleactivate=function(isEnable,id){
+        if(isEnable == 1){
+            alert("已激活")
+        }else {
+            alert(isEnable+'~~~'+id);
+        }
+
+    }
+
     /**
      * 查找key
      */
@@ -120,7 +130,6 @@ app.controller('deviceController',function ($scope,$controller,deviceService) {
             $scope.keyEntity.devicesecret=entity.devicesecret
             $scope.keyEntity.productkey=entity.productkey
             $scope.keyEntity.typekey=response.typekey
-            console.log( $scope.keyEntity);
         }).error(function (error) {
             $scope.getError(error);
         });

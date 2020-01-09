@@ -98,10 +98,10 @@
 		                                 <td ng-show="authoCode==3" width="10%">
                                              <button type="button" class="btn bg-olive btn-info " data-toggle="modal" data-target="#KeyModal" ng-click="findKey(entity)" ng-if="authoCode==3" >查看密钥和Key</button>
                                          </td>
-		                                 <td><button type="button" class="btn {{entity.saleactivate==1 ? 'btn-success':'btn-danger'}}"  role="alert">{{isSaleactivate(entity.saleactivate)}}</button></td>
+		                                 <td><button type="button" class="btn {{entity.saleactivate==1 ? 'btn-success':'btn-danger'}}" ng-click="Saleactivate(entity.saleactivate,entity.id)"  role="alert">{{isSaleactivate(entity.saleactivate)}}</button></td>
 		                                 <td>{{findText(lifecycleWarnList,entity.lifecyclewarn)}}</td>
                                           <td>
-                                              <button type="button" class="btn {{entity.isenable==1 ? 'btn-success':'btn-danger'}}" ng-click="isEnable(entity.isenable)"  role="alert">{{findText(isenableList,entity.isenable)}}</button>
+                                              <button type="button" class="btn {{entity.isenable==1 ? 'btn-success':'btn-danger'}}" ng-click="isEnable(entity.id)"  role="alert">{{findText(isenableList,entity.isenable)}}</button>
                                           </td>
 		                                  <td class="text-center">
                                             <button type="button" class="btn bg-info btn-primary" data-toggle="modal" data-target="#userModal" ng-click="findBindUser(entity.id)" ng-if="authoCode==3 && entity.isBind" >设备绑定的用户</button>
@@ -140,19 +140,23 @@
                             <option value="{{ item.id }}" ng-repeat="item in deviceTypes">{{ item.text }}</option>
                         </select>
                     </td>
-		      	</tr>	
+		      	</tr>
+                <tr>
+                    <td>设备名称</td>
+                    <td><input  class="form-control" placeholder="设备ID" ng-model="deivceEntity.id">  </td>
+                </tr>
 		       	 <tr>
 		      		<td>设备名称</td>
 		      		<td><input  class="form-control" placeholder="设备名称" ng-model="deivceEntity.name">  </td>
 		      	</tr>
-                <tr>
+              <!--  <tr>
                     <td>订阅地址</td>
                     <td><input  class="form-control" placeholder="订阅地址" ng-model="deivceEntity.subscriber">  </td>
-                </tr>
-                <tr>
+                </tr>-->
+          <!--      <tr>
                     <td>发布地址</td>
                     <td><input  class="form-control" placeholder="发布地址" ng-model="deivceEntity.issue">  </td>
-                </tr>
+                </tr>-->
 
             </table>
 			

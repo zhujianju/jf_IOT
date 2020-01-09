@@ -3,6 +3,8 @@ package com.jf.jf_iot.device.controller;
 import com.jf.jf_iot.common.entity.PageResult;
 import com.jf.jf_iot.common.enums.ExceptionEnum;
 import com.jf.jf_iot.common.exception.IOTException;
+import com.jf.jf_iot.common.mqtt.MeMqttClient;
+import com.jf.jf_iot.common.mqtt.MeMqttServer;
 import com.jf.jf_iot.common.utill.SecurityUtil;
 import com.jf.jf_iot.device.entity.Device;
 import com.jf.jf_iot.device.service.DeviceService;
@@ -20,6 +22,15 @@ import java.util.List;
 public class DeviceController {
     @Autowired
     private DeviceService deviceService;
+    /**
+     * mqtt客户端
+     */
+    @Autowired
+    private MeMqttClient mmc;
+
+    @Autowired
+    private MeMqttServer mms;
+
     @Autowired
     HttpSession session;
     @PostMapping("page")
@@ -29,7 +40,7 @@ public class DeviceController {
         return ResponseEntity.ok(page1);
     }
     @GetMapping("findOne/{id}")
-    public ResponseEntity<Device> findOne(@PathVariable("id") Integer id){
+    public ResponseEntity<Device> findOne(@PathVariable("id") String id){
       return ResponseEntity.ok(deviceService.findOne(id));
     }
 
@@ -59,7 +70,7 @@ public class DeviceController {
      * 删除的方法
      */
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteDevice(@PathVariable("id") Integer id){
+    public ResponseEntity<Void> deleteDevice(@PathVariable("id") String  id){
         //检验权限,不为管理员则抛异常
         SecurityUtil.isRoot(session);
         deviceService.deleteById(id);
@@ -70,7 +81,7 @@ public class DeviceController {
      * 根据设备id，查询当前设备下的所有用户
      */
     @GetMapping("findUser/{id}")
-    public ResponseEntity<List<User>> findBindUser(@PathVariable("id") Integer id, HttpSession session){
+    public ResponseEntity<List<User>> findBindUser(@PathVariable("id") String id, HttpSession session){
         //检验权限,不为管理员则抛异常
         SecurityUtil.isRoot(session);
 
@@ -81,7 +92,9 @@ public class DeviceController {
      * 操作设备的开启/关闭
      */
     @GetMapping("isEnable/{id}")
-    public ResponseEntity<Void> isEnable(@PathVariable("id") Integer id){
+    public ResponseEntity<Void> isEnable(@PathVariable("id") String id) throws Exception {
+         mmc.start("mytopice");
+        //mms.start("mytopice",id+"");
         System.out.println("进入操作后台");
         return ResponseEntity.status(HttpStatus.OK).build();
     }

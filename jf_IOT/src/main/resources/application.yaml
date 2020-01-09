@@ -3,18 +3,16 @@ server:
     #  servlet:
   #    context-path: "/jf_IOT"
   #      org.springframework: debug
-#spring:
-#  datasource:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://139.159.132.64:7458/mqtt?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8 #公司服务器
-#    username: root
-#    password: Jifei@123
+
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://139.159.132.64:7458/mqttone?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8 #公司服务器
+   # url: jdbc:mysql://139.159.132.64:7458/mqttone?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8 #公司服务器
+   # username: root
+   # password: Jifei@123
+    url: jdbc:mysql://192.168.29.128:3306/mqtt?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
     username: root
-    password: Jifei@123
+    password: qq987321
     mqtt:
       client:
         id: mqttId
@@ -47,6 +45,4 @@ mybatis:
   mapper-locations: classpath:mybatis/*/*.xml      #  所有的mapper映射文件
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-wx:
-  appid: wx756f10679ececa93
-  secret: a51784bae0bd89fb3ca980772e168dd0
+

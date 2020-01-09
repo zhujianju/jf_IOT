@@ -63,7 +63,7 @@
                             </div>
                         </div>
                             <!--工具栏/-->
-                            <div class="jumbotron" ng-if="errorEntityt.code==001 ">
+                            <div class="jumbotron" ng-if="errorEntityt.code!=000 ">
                                 <h1>{{errorEntityt.message}}</h1>
                                 <p ng-bind-html="errorEntityt.text | trustHtml"></p>
                             </div>
@@ -125,9 +125,14 @@
 	      		<tr>
 		      		<td >分类</td>
 		      		<td>
-                        <select select2 ng-model="entity.classificationId" ng-change="reloadList()" class="form-control" placeholder="选择设备分类">
+                        <select ng-show="entity.status != 1" select2 ng-model="entity.classificationId" ng-change="reloadList()" class="form-control" placeholder="选择设备分类">
                             <option value="{{ item.id }}" ng-repeat="item in deviceTypes">{{ item.text }}</option>
                         </select>
+
+                      <!--  <select ng-show="entity.status == 1" readonly="readonly" select2 ng-model="entity.classificationId" ng-change="reloadList()" class="form-control" placeholder="选择设备分类">
+                            <option value="{{ item.id }}" ng-repeat="item in deviceTypes">{{ item.text }}</option>
+                        </select>-->
+                        <input  class="form-control"  ng-show="entity.status == 1" readonly="readonly" placeholder="名称" ng-value="findText(deviceTypes,entity.classificationId)">
                     </td>
 		      	</tr>
 			 </table>				

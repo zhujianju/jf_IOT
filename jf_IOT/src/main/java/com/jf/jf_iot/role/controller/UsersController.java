@@ -30,7 +30,7 @@ public class UsersController {
     @RequestMapping("/page")
     public ResponseEntity<PageResult<User>> querDeviceByPage(@RequestBody(required = false) User users, int page, int rows){
         User user = (User) session.getAttribute("user");
-        PageResult page1 = userService.findPage(page, rows, users, user);
+        PageResult page1 = userService.findPage(page,rows,user);
         return ResponseEntity.ok(page1);
     }
 }

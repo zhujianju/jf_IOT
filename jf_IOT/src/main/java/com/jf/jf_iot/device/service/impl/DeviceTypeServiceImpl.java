@@ -132,7 +132,7 @@ public class DeviceTypeServiceImpl implements DeviceTypeService {
 
     @Override
     public int insert(DeviceType deviceType,User user) {
-        deviceType.setTypekey(UUID.randomUUID().toString());
+        deviceType.setTypekey(UUID.randomUUID().toString().replace("-","").substring(0,8));
         deviceType.setCreatetime(new Date());
         deviceType.setCreatorID(user.getId());
         return deviceTypeMapper.insert(deviceType);

@@ -10,6 +10,15 @@ import java.util.List;
 public interface DeviceService extends BaseService<Device> {
     public PageResult findPage(int pageNum, int pageSize, Device device, User user);
 
-    public List<User> findBindUser(Integer id);
+    public List<User> findBindUser(String id);
+
+    /**
+     * 设备id(String 32位 )
+     * @param id
+     * @return
+     */
+    public Device findOne(String id);
+
+    public int deleteById(String id);
 
 }

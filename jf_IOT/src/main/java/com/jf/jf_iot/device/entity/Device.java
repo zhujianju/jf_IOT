@@ -14,7 +14,7 @@ import java.util.Date;
 public class Device {
     @Id
     @KeySql(useGeneratedKeys = true)
-    private Integer id;//设备Id
+    private String id;//设备Id
     private Integer typeid;//设备分类id
     private String name;//设备名称
     private String productkey;//出入库key
@@ -24,7 +24,6 @@ public class Device {
     private String subscriber;//订阅地址
     private String issue;//发布地址
     private Integer lifecyclewarn;//0已入库，1已出售，2已激活，3已已停用，4失效等状态
-
     private Integer isenable;//是否开启。0.关闭  1.开启
 
     private Date createtime;//创建时间

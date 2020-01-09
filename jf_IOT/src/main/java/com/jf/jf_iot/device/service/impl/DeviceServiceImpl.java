@@ -5,14 +5,18 @@ import com.github.pagehelper.PageInfo;
 import com.jf.jf_iot.common.entity.PageResult;
 import com.jf.jf_iot.common.enums.ExceptionEnum;
 import com.jf.jf_iot.common.exception.IOTException;
+import com.jf.jf_iot.common.mqtt.MeMqttServer;
 import com.jf.jf_iot.device.entity.Device;
+import com.jf.jf_iot.device.entity.DeviceType;
 import com.jf.jf_iot.device.mapper.DeviceMapper;
 import com.jf.jf_iot.device.service.DeviceService;
+import com.jf.jf_iot.device.service.DeviceTypeService;
 import com.jf.jf_iot.user.entity.User;
 import com.jf.jf_iot.user.mapper.UserMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
 
@@ -27,7 +31,16 @@ public class DeviceServiceImpl implements DeviceService {
     private DeviceMapper deviceMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private DeviceTypeService deviceTypeService;
 
+    /*定义头主题,公共主题*/
+    public static final String PUBLICTOPIC="public";
+
+    /*订阅地址结尾指定值*/
+    public static final String SUBSCRIBER="/user/devmsq";
+    /*发布地址结尾指定值*/
+    public static final String ISSUE="/user/cloudmsg";
     @Override
     public List<Device> findAll() {
         return null;
@@ -101,6 +114,11 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public Device findOne(Integer id) {
+        return null;
+    }
+
+    @Override
+    public Device findOne(String id) {
         Device device=new Device();
         device.setId(id);
         Device de = deviceMapper.selectOne(device);
@@ -108,9 +126,14 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public int deleteById(Integer id) {
+    public int deleteById(String id) {
 
         return  deviceMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public int deleteById(Integer id) {
+        return 0;
     }
 
     @Override
@@ -119,18 +142,35 @@ public class DeviceServiceImpl implements DeviceService {
             device.setLastUpdateId(user.getId());
         }
         device.setUpdatetime(new Date());
-        return deviceMapper.updateByPrimaryKey(device);
+        Example example = new Example(Device.class);
+        example.createCriteria().andEqualTo("devicename", device.getDevicename());
+        return deviceMapper.updateByExample(device,example);
     }
 
     @Override
+    @Transactional
     public int insert(Device device,User user) {
-        UUID uuid=UUID.randomUUID();
         device.setSaleactivate(0);//设置状态未激活
-        device.setProductkey(UUID.randomUUID().toString());
-        device.setDevicename(UUID.randomUUID().toString());
-        device.setDevicesecret(UUID.randomUUID().toString());
+        String UUid=UUID.randomUUID().toString().replace("-","");
+        String productKey=UUid.substring(0,8);
+        String deviceName = UUid.substring(9,16);
+        String deviceSecret = UUid.substring(17,24);
+        device.setProductkey(productKey);
+        device.setDevicename(deviceName);
+        device.setDevicesecret(deviceSecret);
         device.setIsenable(0);//设置默认未开启
         device.setLifecyclewarn(0);//设置为已入库状态
+        /*查找typeKey*/
+        DeviceType deivceType = deviceTypeService.findOne(device.getTypeid());
+        String typekey = deivceType.getTypekey();
+        /*定制前段，相同值*/
+        String address="/"+typekey+"/"+productKey+"/"+deviceName;
+        /*生成subscriber订阅地址*/
+        String subscriber=address;
+        /*生成issue发布地址*/
+        String issue=address;
+        device.setSubscriber(subscriber);
+        device.setIssue(issue);
         if(user != null){
             device.setCreatorID(user.getId());
         }
@@ -140,7 +180,7 @@ public class DeviceServiceImpl implements DeviceService {
 
 
     @Override
-    public List<User> findBindUser(Integer id) {
+    public List<User> findBindUser(String id) {
         List<User> users = deviceMapper.findBindUser(id);
 
         return users;
@@ -171,6 +211,8 @@ public class DeviceServiceImpl implements DeviceService {
             device.setProductkey(null);
             device.setDevicename(null);
             device.setDevicesecret(null);
+            device.setSubscriber(null);
+            device.setIssue(null);
         }
         return devices;
     }
