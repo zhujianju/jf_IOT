@@ -1,6 +1,7 @@
 package com.jf.jf_iot.common.enums;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
