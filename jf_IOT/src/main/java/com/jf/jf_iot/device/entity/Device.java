@@ -24,6 +24,7 @@ public class Device {
     private String subscriber;//订阅地址
     private String issue;//发布地址
     private Integer lifecyclewarn;//0已入库，1已出售，2已激活，3已已停用，4失效等状态
+    @Transient
     private Integer isenable;//是否开启。0.关闭  1.开启
 
     private Date createtime;//创建时间
